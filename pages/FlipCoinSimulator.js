@@ -5,6 +5,8 @@ import Input from '../Components/Input/Input';
 import Button from '../Components/Button/Button';
 import Chart from 'react-google-charts';
 import fetch from 'isomorphic-unfetch';
+import Loader from 'react-loader-spinner';
+import {getRandomLoaderType} from './api/utils/utils';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -35,6 +37,7 @@ const FlipCoinSimulator = () => {
     const [Experiments, setExperiments] = useState('2000');
     const [Probability, setProbability] = useState('0.50');
     const [FieldError, setFieldError] = useState('');
+    const [Loading, setLoading] = useState(false);
     const [ExperimentData, setExperimentData] = useState(undefined)
 
     const inputRangeValidator = useCallback(
@@ -51,11 +54,13 @@ const FlipCoinSimulator = () => {
         }, []
     );    
     const getExperimentResults = useCallback(
-        (Experiments) => {
-            const url =`api/FlipCoin?size=${Experiments}` 
+        (Experiments,Probability) => {
+            setLoading(true);
+            setExperimentData(undefined);
+            const url =`api/FlipCoin?size=${Experiments}&p=${Probability}` 
             fetch(url)
             .then(resolve => resolve.json())
-            .then(data => setExperimentData(data));
+            .then(data => {setLoading(false); setExperimentData(data)});
         }, []
     );    
 
@@ -70,7 +75,7 @@ const FlipCoinSimulator = () => {
                                 onChange={(event) => {setExperiments(event.target.value)}}
                                 name="Experiments"
                                 min="1"
-                                max="10000000">
+                                max="100000001">
                         </NumberOfExperiments>
                         <label>Experiments</label>
                     </InputContainer>
@@ -86,11 +91,22 @@ const FlipCoinSimulator = () => {
                         <label>Probability</label>
                     </InputContainer>
                     <InputContainer>
-                        <Button onClick={() => getExperimentResults(Experiments)}>Go!</Button>
+                        <Button onClick={() => getExperimentResults(Experiments, Probability)} disabled={Loading}>Go!</Button>
                     </InputContainer>
                 </VariableContainer>
+
                 <ChartContainer>
                     {
+                        Loading &&
+                            <Loader
+                                type={getRandomLoaderType()}
+                                color="#455a64"
+                                height={250}
+                                width={250}
+                                timeout={3000}/>
+                    }
+                    {
+
                         ExperimentData !== undefined 
                             &&
                             <Chart
