@@ -27,7 +27,12 @@ const ChartContainer = styled.div`
     flex-direction:row;
     justify-content:center;
 `;
-
+const ErrorField = styled.div`
+    color: red;
+    border-radius:10px;
+    height: 2rem;
+    font-weight: ${props => props.theme.font.weight.bold};
+`;
 const NumberOfExperiments = styled(Input).attrs({placeholder:'1-1000000', type:'number', name:'Experiments'})`
 `;
 const HeadProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})`
@@ -43,9 +48,9 @@ const FlipCoinSimulator = () => {
     const inputRangeValidator = useCallback(
         (event,setFuncion) => {
             let { value, min, max } = event.target;
-            if (Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
+            if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
               setFuncion('');
-              setFieldError(`Number of experiments allowed between ${min} and ${min}`);
+              setFieldError(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
               setFieldError('');
@@ -60,7 +65,7 @@ const FlipCoinSimulator = () => {
             const url =`api/FlipCoin?size=${Experiments}&p=${Probability}` 
             fetch(url)
             .then(resolve => resolve.json())
-            .then(data => {setLoading(false); setExperimentData(data)});
+            .then(data => {setLoading(false); setExperimentData(data)})
         }, []
     );    
 
@@ -94,16 +99,19 @@ const FlipCoinSimulator = () => {
                         <Button onClick={() => getExperimentResults(Experiments, Probability)} disabled={Loading}>Go!</Button>
                     </InputContainer>
                 </VariableContainer>
-
+                {
+                    FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
+                }
                 <ChartContainer>
                     {
                         Loading &&
                             <Loader
+                                // @ts-ignore
                                 type={getRandomLoaderType()}
                                 color="#455a64"
                                 height={250}
                                 width={250}
-                                timeout={3000}/>
+                                timeout={5000}/>
                     }
                     {
 

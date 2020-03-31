@@ -1,11 +1,2 @@
-export const loaderTypes = [
-                            'Audio',
-                            'Ball-Triangle0',
-                            'Bars',
-                            'Circles',
-                            'Grid',
-                            'Oval',
-                            'Puff',
-                            'Rings',
-                            'TailSpin',
-                            'ThreeDots'];
+export const loaderTypes = ['Audio','BallTriangle','Bars','Circles','Grid','Hearts','Oval','Puff','Rings',
+                            'TailSpin','ThreeDots','Watch','RevolvingDot','Triangle','Plane','MutatingDots'];

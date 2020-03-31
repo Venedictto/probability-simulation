@@ -26,7 +26,13 @@ const Header = () => {
 
     const renderMenu = useCallback(
             () => { 
-                return menu.map((item,index) => <HeaderItem key={`${item.name}-${index}`} name={item.name} url={item.url} subItems={item.subItems}/>)
+                return menu.map((item,index) => 
+                    <HeaderItem 
+                        key={`${item.name}-${index}`}
+                        name={item.name}
+                        url={item.url}
+                        subItems={item.subItems}
+                    />)
             },[]);
             
     return (
