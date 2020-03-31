@@ -18,5 +18,9 @@ const Button = styled.button`
     &:focus {
         outline: unset;
     }
+    &:disabled {
+        background-color: ${props => props.theme.color.primaryDarkColor};
+        color: ${props => props.theme.color.primaryLightColor};
+    }
 `;
 export default Button;
