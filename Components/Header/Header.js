@@ -31,15 +31,16 @@ const Header = () => {
                         key={`${item.name}-${index}`}
                         name={item.name}
                         url={item.url}
-                        subItems={item.subItems}
                     />)
             },[]);
             
     return (
         <HeaderContainer>
-            <HeaderText>
-                Simulator
-            </HeaderText>
+            <Link href={'./index'}>
+                <HeaderText>
+                    Simulator
+                </HeaderText>
+            </Link>
             {renderMenu()}
         </HeaderContainer>
     )
@@ -47,20 +48,9 @@ const Header = () => {
 
 const menu = 
     [
-        {
-            name: 'Coins',
-            url: '',
-            subItems: [
-                    {   name: 'Flip coin experiment', url: './FlipCoinSimulator'},
-                    {   name: 'Flip coin until experiment', url: './FlipCoinUntilSimulator'}
-                ]
-        },
-        {
-            name: 'Dices',
-            url: './RollDiceSimulator',
-            subItems: [],
-        },
-        
+        {   name: 'Flip coin',          url: './FlipCoinSimulator'},
+        {   name: 'Flip coin until',    url: './FlipCoinUntilSimulator'},
+        {   name: 'Roll dice',              url: './RollDiceSimulator'},
     ]
 
 
