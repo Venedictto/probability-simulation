@@ -10,22 +10,23 @@ export default (req, res) => {
 }
 
 
+const MaxNumberOfExperiments = 100000;
 const getFlipCoinResults = (size, min, max, p) => {
     let heads = 0;
     let tails = 0;
-    let haveExperiments = true;
+    let HaveMoreExperiments = true;
     let repetitions = size;
-    while (haveExperiments){
+    while (HaveMoreExperiments){
         let sample = [];
-        if(repetitions > 1000000)
+        if(repetitions > MaxNumberOfExperiments)
         {
-            sample = getSample(1000000, min, max, true);
-            repetitions -= 1000000
+            sample = getSample(MaxNumberOfExperiments, min, max, true);
+            repetitions -= MaxNumberOfExperiments
         } 
         else 
         {
             sample = getSample(repetitions, min, max, true);
-            haveExperiments = false;
+            HaveMoreExperiments = false;
         }
         heads += sample.filter(value => value > p).length;
         tails += sample.filter(value => value < p).length;

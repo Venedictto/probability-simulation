@@ -111,7 +111,7 @@ const FlipCoinSimulator = () => {
                             &&
                             <Chart
                                 width={'500px'}
-                                height={'500px'}
+                                height={'300px'}
                                 chartType="PieChart"
                                 loader={<div>Loading Chart</div>}
                                 data={ExperimentData}
