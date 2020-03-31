@@ -30,17 +30,6 @@ const NumberOfExperiments = styled(Input).attrs({placeholder:'1-1000000', type:'
 `;
 const HeadProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})`
 `;
-const chartOptions = {
-    title: 'omega',
-    chartArea: { width: '50%' },
-    hAxis: {
-        title: 'Number of success',
-        minValue: 0,
-    },
-    vAxis: {
-        title: 'Omega',
-    },
-};
 
 const FlipCoinSimulator = () => {
     const [Experiments, setExperiments] = useState('2000');
@@ -104,15 +93,23 @@ const FlipCoinSimulator = () => {
                     {
                         ExperimentData !== undefined 
                             &&
-                                <Chart
-                                    width={'500px'}
-                                    height={'300px'}
-                                    chartType="BarChart"
-                                    loader={<div>Loading Chart</div>}
-                                    data={ExperimentData}
-                                    options={chartOptions}
-                                />
+                            <Chart
+                                width={'500px'}
+                                height={'500px'}
+                                chartType="PieChart"
+                                loader={<div>Loading Chart</div>}
+                                data={ExperimentData}
+                                options={{
+                                    is3D: true,
+                                    slices: {
+                                        0: { color: '#455a64', offset: 0.01 },
+                                        1: { color: '#718792', offset: 0.01 },
+                                    }
+                                }}
+                                rootProps={{ 'data-testid': '1' }}
+                            />
                     }
+                    
                 </ChartContainer>
             </Card>
         </div>
