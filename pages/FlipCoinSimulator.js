@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Input from '../Components/Input/Input';
 import Button from '../Components/Button/Button';
 import Chart from 'react-google-charts';
+import fetch from 'isomorphic-unfetch';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -40,14 +41,9 @@ const chartOptions = {
         title: 'Omega',
     },
 };
-const data =[
-    ['Sides of the coin', 'Number of successes', { role: 'style' }],
-    ['Head', 8500, '#455a64'],
-    ['Tail', 3000, '#718792'],
-]
 
 const FlipCoinSimulator = () => {
-    const [Experiments, setExperiments] = useState('20000');
+    const [Experiments, setExperiments] = useState('2000');
     const [Probability, setProbability] = useState('0.50');
     const [FieldError, setFieldError] = useState('');
     const [ExperimentData, setExperimentData] = useState(undefined)
@@ -65,23 +61,14 @@ const FlipCoinSimulator = () => {
             }
         }, []
     );    
-
-    useCallback(()=> {
-        const url =`${process.env.BASE_URL}api/FlipCoin?size=${Experiments}` 
-        fetch(url)
-        .then(resolve => resolve.json())
-        .then(data => setExperimentData(data));
-    },[]);
-
     const getExperimentResults = useCallback(
-        () => {
-            // Validation of the parameters
-            console.log('Experiments: ', Experiments);
-            console.log('Probability: ', Probability);
-            setExperimentData(data);
-        
+        (Experiments) => {
+            const url =`api/FlipCoin?size=${Experiments}` 
+            fetch(url)
+            .then(resolve => resolve.json())
+            .then(data => setExperimentData(data));
         }, []
-    );
+    );    
 
     return (
         <div>
@@ -94,7 +81,7 @@ const FlipCoinSimulator = () => {
                                 onChange={(event) => {setExperiments(event.target.value)}}
                                 name="Experiments"
                                 min="1"
-                                max="1000000">
+                                max="10000000">
                         </NumberOfExperiments>
                         <label>Experiments</label>
                     </InputContainer>
@@ -110,7 +97,7 @@ const FlipCoinSimulator = () => {
                         <label>Probability</label>
                     </InputContainer>
                     <InputContainer>
-                        <Button onClick={getExperimentResults}>Go!</Button>
+                        <Button onClick={() => getExperimentResults(Experiments)}>Go!</Button>
                     </InputContainer>
                 </VariableContainer>
                 <ChartContainer>
