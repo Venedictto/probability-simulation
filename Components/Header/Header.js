@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import HeaderItem from './HeaderItem/HeaderItem';
 
 const HeaderContainer = styled.div`
     cursor:pointer;
     display:flex;
     flex-direction: row;
-    height:100px;
+    height:${props => `${props.theme.header.height}px`};
     background-color:${props => props.theme.color.primaryColor};
     width:100%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -20,45 +21,41 @@ const HeaderText = styled.div`
     color:white;
     border-right: 5px solid ${props => props.theme.color.primaryDarkColor};
 `;
-const HeaderButton = styled.div`
-    height:100%;
-    font-family: ${props => props.theme.font.family};
-    font-size: ${props => props.theme.font.size.subTitle};
-    color:white;
-    &:hover{
-        background-color:${props => props.theme.color.primaryLightColor};
-        color:black;
-    }
-`;
-const TextButton = styled.div`
-    display:flex;
-    margin:1rem;
-    margin-top: 25%;
-`;
 
 const Header = () => {
+
+    const renderMenu = useCallback(
+            () => { 
+                return menu.map((item,index) => <HeaderItem key={`${item.name}-${index}`} name={item.name} url={item.url} subItems={item.subItems}/>)
+            },[]);
+            
     return (
         <HeaderContainer>
             <HeaderText>
                 Simulator
             </HeaderText>
-            <Link href={'./FlipCoinSimulator'}>
-                <HeaderButton>
-                    <TextButton>
-                        Flip Coin 
-                    </TextButton>
-                </HeaderButton>   
-            </Link>
-            <Link href={'./RollDiceSimulator'}>
-                <HeaderButton>
-                    <TextButton>
-                        Roll Dice
-                    </TextButton>
-                </HeaderButton>
-            </Link>
+            {renderMenu()}
         </HeaderContainer>
     )
 }
+
+const menu = 
+    [
+        {
+            name: 'Coins',
+            url: '',
+            subItems: [
+                    {   name: 'Flip coin experiment', url: './FlipCoinSimulator'},
+                    {   name: 'Flip coin until experiment', url: './FlipCoinUntilSimulator'}
+                ]
+        },
+        {
+            name: 'Dices',
+            url: './RollDiceSimulator',
+            subItems: [],
+        },
+        
+    ]
 
 
 export default Header

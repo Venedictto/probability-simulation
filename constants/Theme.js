@@ -5,16 +5,19 @@ const theme = {
         primaryLightColor: '#718792',
     },
     font: {
-        family: "helvetica",
+        family: 'helvetica',
         size: {
-            tittle:"50px",
-            subTitle:"25px",
-            text:"18px",
+            tittle:'50px',
+            subTitle:'25px',
+            text:'18px',
         },
         weight: {
           normal: 300,
           bold: 700,
         }
+    },
+    header:{
+      height: 100,
     }
   };
 
