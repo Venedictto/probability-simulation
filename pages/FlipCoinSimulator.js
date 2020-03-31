@@ -3,6 +3,7 @@ import Card from '../Components/Card/Card';
 import styled from 'styled-components';
 import Input from '../Components/Input/Input';
 import Button from '../Components/Button/Button';
+import Chart from 'react-google-charts';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -18,17 +19,38 @@ const InputContainer = styled.div`
     font-size: ${props => props.theme.font.size.text};
     font-weight: ${props => props.theme.font.weight.bold};
 `;
-
+const ChartContainer = styled.div`
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+`;
 
 const NumberOfExperiments = styled(Input).attrs({placeholder:'1-1000000', type:'number', name:'Experiments'})`
 `;
 const HeadProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})`
 `;
+const chartOptions = {
+    title: 'omega',
+    chartArea: { width: '50%' },
+    hAxis: {
+        title: 'Number of success',
+        minValue: 0,
+    },
+    vAxis: {
+        title: 'Omega',
+    },
+};
+const data =[
+    ['Sides of the coin', 'Number of successes', { role: 'style' }],
+    ['Head', 8500, '#455a64'],
+    ['Tail', 3000, '#718792'],
+]
 
 const FlipCoinSimulator = () => {
     const [Experiments, setExperiments] = useState('20000');
-    const [Probability, setProbability] = useState('0.50')
+    const [Probability, setProbability] = useState('0.50');
     const [FieldError, setFieldError] = useState('');
+    const [ExperimentData, setExperimentData] = useState(undefined)
 
     const inputRangeValidator = useCallback(
         (event,setFuncion) => {
@@ -41,6 +63,23 @@ const FlipCoinSimulator = () => {
               setFieldError('');
               setFuncion(value);
             }
+        }, []
+    );    
+
+    useCallback(()=> {
+        const url =`${process.env.BASE_URL}api/FlipCoin?size=${Experiments}` 
+        fetch(url)
+        .then(resolve => resolve.json())
+        .then(data => setExperimentData(data));
+    },[]);
+
+    const getExperimentResults = useCallback(
+        () => {
+            // Validation of the parameters
+            console.log('Experiments: ', Experiments);
+            console.log('Probability: ', Probability);
+            setExperimentData(data);
+        
         }, []
     );
 
@@ -71,9 +110,23 @@ const FlipCoinSimulator = () => {
                         <label>Probability</label>
                     </InputContainer>
                     <InputContainer>
-                        <Button onClick={()=> {console.log('Experiments: ', Experiments); console.log('Probability: ', Probability)}}>Go!</Button>
+                        <Button onClick={getExperimentResults}>Go!</Button>
                     </InputContainer>
                 </VariableContainer>
+                <ChartContainer>
+                    {
+                        ExperimentData !== undefined 
+                            &&
+                                <Chart
+                                    width={'500px'}
+                                    height={'300px'}
+                                    chartType="BarChart"
+                                    loader={<div>Loading Chart</div>}
+                                    data={ExperimentData}
+                                    options={chartOptions}
+                                />
+                    }
+                </ChartContainer>
             </Card>
         </div>
     )
