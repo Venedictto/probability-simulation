@@ -38,14 +38,14 @@ const NumberOfExperiments = styled(Input).attrs({placeholder:'1-1000000', type:'
 const HeadProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})`
 `;
 const chartOptions = {
-    title: 'omega',
+    title: '',
     chartArea: { width: '50%' },
     hAxis: {
-        title: 'Number of success',
+        title: 'Number of tails',
         minValue: 0,
     },
     vAxis: {
-        title: 'Omega',
+        title: 'number of thrown',
     },
     bar: { groupWidth: '95%' },
     legend: { position: 'none' },
@@ -131,7 +131,7 @@ const FlipCoinUntilSimulator = () => {
 
                         ExperimentData !== undefined &&
                             <Chart
-                                width={'500px'}
+                                width={'800px'}
                                 height={'800px'}
                                 chartType="BarChart"
                                 loader={<div>Loading Chart</div>}

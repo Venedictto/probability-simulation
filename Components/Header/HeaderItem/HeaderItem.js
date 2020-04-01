@@ -14,7 +14,7 @@ const HeaderItemButton = styled.div`
 
 const TextButton = styled.div`
     display:flex;
-    margin-top: ${props => `${(props.theme.header.height/4)}px`};
+    margin-top: ${props => `${(props.theme.header.height/5)}px`};
 `;
 
 const HeaderSubmenuItem = styled.div`
@@ -27,12 +27,13 @@ const HeaderSubmenuItem = styled.div`
 `
 
 const HeaderItem = (props) => {
+    const {url, name} = props;
     return (
         <HeaderSubmenuItem>
             <HeaderItemButton>
-                <Link href={props.url} >
+                <Link href={url} >
                     <TextButton>
-                        {props.name}
+                        {name}
                     </TextButton>
                 </Link>
             </HeaderItemButton>
