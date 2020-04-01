@@ -6,7 +6,7 @@ const MaxNumberOfExperiments = 100000;
 const min = 0;
 const max = 1;
 const flipCoinHeader =  ['Sides of the coin', 'Number of successes'];
-const flipCoinUntilheader =  ['Number of trys', 'Number of tails', { role: 'style' }];
+const flipCoinUntilheader =  ['Number of attempts', 'Number of tails', { role: 'style' }];
 const colors = Utils.getThemeColours();
 
 export const getFlipCoinResults = (size, p) => {
@@ -30,8 +30,8 @@ export const getFlipCoinResults = (size, p) => {
         tails += sample.filter(value => value < p).length;
     }
     const result = 
-       [['Head', heads, ''], 
-        ['Tail', tails, '']]
+       [['Head', heads], 
+        ['Tail', tails]]
     result.unshift(flipCoinHeader);
     return result;
 }
@@ -43,7 +43,7 @@ export const getFlipCoinUntilResults = (size, p) => {
         tails[tailsUntilHead]++;
     }
     let lastZeroIndex = getLastZeroIndex(tails);
-    let results = tails.map((value,index) => [index.toString(), value, colors[index%3]]).slice(0,lastZeroIndex+1);
+    let results = tails.map((value,index) => [index.toString(), value, colors[index%3]]).slice(1,lastZeroIndex);
     results.unshift(flipCoinUntilheader);2
     return results;
 }
