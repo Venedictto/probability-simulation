@@ -1,4 +1,4 @@
-import {getFlipCoinResults} from './utils/cointUtils';
+import {getFlipCoinResults} from './utils/coinUtils';
 
 
 export default (req, res) => {
@@ -9,7 +9,7 @@ export default (req, res) => {
         res.status(400).json({message:'Size or Probability are not specify'});
     } 
     else{
-        const data = getFlipCoinResults(parseInt(size), 0, 1, p)
+        const data = getFlipCoinResults(parseInt(size), p)
         res.status(200).json(data);
     }
 }
