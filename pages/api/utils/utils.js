@@ -1,5 +1,6 @@
 import R from 'ramda';
 import {loaderTypes} from '../../../constants/constants';
+import theme from '../../../constants/Theme';
 
 export const getRandomNumber = (min, max, isFloat) => {
     let range = max - min
@@ -11,3 +12,5 @@ export const getRandomNumber = (min, max, isFloat) => {
 export const getRandomLoaderType = () => {
   return loaderTypes[getRandomNumber(0, loaderTypes.length-1, false)];
 }
+
+export const getThemeColours = () => { return Object.keys(theme.color).map(key => theme.color[key]) }
