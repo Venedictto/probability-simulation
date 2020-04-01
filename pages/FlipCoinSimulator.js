@@ -36,7 +36,7 @@ const ErrorField = styled.div`
     height: 2rem;
     font-weight: ${props => props.theme.font.weight.bold};
 `;
-const NumberOfExperiments = styled(Input).attrs({placeholder:'1-1000000', type:'number', name:'Experiments'})`
+const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})`
 `;
 const HeadProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})`
 `;
@@ -83,7 +83,7 @@ const FlipCoinSimulator = () => {
                                 onChange={(event) => {setExperiments(event.target.value)}}
                                 name="Experiments"
                                 min="1"
-                                max="100000001">
+                                max="10000001">
                         </NumberOfExperiments>
                         <label>Experiments</label>
                     </InputContainer>
