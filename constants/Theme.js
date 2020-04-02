@@ -1,8 +1,11 @@
 const theme = {
     color:{
-        primaryColor: '#455a64',
-        primaryDarkColor: '#1c313a',
-        primaryLightColor: '#718792',
+      primaryColor: '#455a64',
+      primaryDarkColor: '#1c313a',
+      primaryLightColor: '#718792',
+      secondaryColor: '#bf360c',
+      secondaryDarkColor: '#870000',
+      secondaryLightColor: '#f9683a',
     },
     font: {
         family: 'helvetica',
