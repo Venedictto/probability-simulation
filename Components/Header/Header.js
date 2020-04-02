@@ -15,6 +15,7 @@ const HeaderContainer = styled.div`
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     display: flex;
     grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+    box-shadow: 0 20px 40px 0 rgba(0,0,0,0.2);
     @media (max-width: 768px) {
         justify-content:space-between;
     }
@@ -109,9 +110,10 @@ const Header = () => {
 
 const menu = 
     [
-        {   name: 'Flip coin',          url: './FlipCoinSimulator'},
-        {   name: 'Flip coin until',    url: './FlipCoinUntilSimulator'},
-        {   name: 'Roll dice',              url: './RollDiceSimulator'},
+        {   name: 'Bernoulli',  url: './bernoulliSimulator'},
+        {   name: 'Geomatric',  url: './geometricSimulator'},
+        {   name: 'Binomial',   url: './binomialSimulator'},
+        {   name: 'Pascal',     url: './pascalSimulator'},
     ]
 
 
