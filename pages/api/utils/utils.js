@@ -13,4 +13,7 @@ export const getRandomLoaderType = () => {
   return loaderTypes[getRandomNumber(0, loaderTypes.length-1, false)];
 }
 
-export const getThemeColours = () => { return Object.keys(theme.color).map(key => theme.color[key]) }
+export const getThemeColours = () => { 
+  const colors = Object.keys(theme.color).map(key => theme.color[key]);
+  return  colors[getRandomNumber(0,colors.length-1,false)];
+}
