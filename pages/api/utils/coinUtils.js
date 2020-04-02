@@ -5,7 +5,6 @@ const min = 0;
 const max = 1;
 const flipCoinHeader =  ['Sides of the coin', 'Number of successes'];
 const flipCoinUntilheader =  ['Number of attempts', 'Number of tails', { role: 'style' }];
-const colors = Utils.getThemeColours();
 
 export const getFlipCoinResults = (size, p) => {
     let sample = getFlipCoinSample(size, true);
@@ -19,7 +18,7 @@ export const getFlipCoinResults = (size, p) => {
 export const getFlipCoinUntilResults = (size, p) => {
     let sample = getFlipCoinUntilHeadSample(size, p);
     let results = R.groupWith(R.equals, R.sort((a, b) => a - b,sample))
-                   .map((value,index) => [`# ${index}`, value.length, colors[index%3]])
+                   .map((value,index) => [`# ${index+1}`, value.length, Utils.getThemeColours()])
     results.unshift(flipCoinUntilheader);
     return results;
 }

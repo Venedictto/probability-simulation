@@ -1,12 +1,12 @@
 import React, {useState, useCallback} from 'react';
-import Card from '../Components/Card/Card';
+import Card from '../../../Card/Card';
 import styled from 'styled-components';
-import Input from '../Components/Input/Input';
-import Button from '../Components/Button/Button';
+import Input from '../../../Input/Input';
+import Button from '../../../Button/Button';
 import Chart from 'react-google-charts';
 import fetch from 'isomorphic-unfetch';
 import Loader from 'react-loader-spinner';
-import {getRandomLoaderType} from './api/utils/utils';
+import {getRandomLoaderType} from '../../../../pages/api/utils/utils';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -41,7 +41,7 @@ const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:
 const HeadProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})`
 `;
 
-const FlipCoinSimulator = () => {
+const FlipCoinLayout = () => {
     const [Experiments, setExperiments] = useState('2000');
     const [Probability, setProbability] = useState('0.50');
     const [FieldError, setFieldError] = useState('');
@@ -74,7 +74,6 @@ const FlipCoinSimulator = () => {
 
     return (
         <div>
-            <Card>
                 <VariableContainer>
                     <InputContainer>
                         <NumberOfExperiments
@@ -138,10 +137,9 @@ const FlipCoinSimulator = () => {
                     }
                     
                 </ChartContainer>
-            </Card>
         </div>
     )
 }
 
 
-export default FlipCoinSimulator;
+export default FlipCoinLayout;
