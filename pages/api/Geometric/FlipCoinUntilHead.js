@@ -1,4 +1,4 @@
-import {getFlipCoinUntilResults} from './utils/coinUtils';
+import {getFlipCoinUntilResults} from '../utils/geometricUtils';
 
 
 export default (req, res) => {

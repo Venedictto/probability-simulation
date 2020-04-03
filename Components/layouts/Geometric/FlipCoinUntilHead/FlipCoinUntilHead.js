@@ -79,7 +79,7 @@ const FlipCoinUntilHead = () => {
         (Experiments,Probability) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/FlipCoinUntil?size=${Experiments}&p=${Probability}` 
+            const url =`api/Geometric/FlipCoinUntilHead?size=${Experiments}&p=${Probability}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})
@@ -118,31 +118,30 @@ const FlipCoinUntilHead = () => {
             {
                 FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
             }
-            <ChartContainer>
-                {
-                    Loading &&
-                        <Loader
-                            // @ts-ignore
-                            type={getRandomLoaderType()}
-                            color="#455a64"
-                            height={250}
-                            width={250}
-                            timeout={5000}/>
-                }
-                {
+            {
+                Loading &&
+                    <Loader
+                        // @ts-ignore
+                        type={getRandomLoaderType()}
+                        color="#455a64"
+                        height={250}
+                        width={250}
+                        timeout={5000}/>
+            }
+            {
 
-                    ExperimentData !== undefined &&
-                        <Chart
-                            width={'800px'}
-                            height={'800px'}
-                            chartType="BarChart"
-                            loader={<div>Loading Chart</div>}
-                            data={ExperimentData}
-                            options={chartOptions}
-                        />
-                }
-                
-            </ChartContainer>
+                ExperimentData !== undefined &&
+                <ChartContainer>
+                    <Chart
+                        width={'800px'}
+                        height={'800px'}
+                        chartType="BarChart"
+                        loader={<div>Loading Chart</div>}
+                        data={ExperimentData}
+                        options={chartOptions}
+                    />
+                </ChartContainer>
+            }
         </div>
     )
 }

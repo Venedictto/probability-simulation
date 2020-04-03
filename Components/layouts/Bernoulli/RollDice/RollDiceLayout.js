@@ -38,12 +38,12 @@ const ErrorField = styled.div`
 `;
 const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})`
 `;
-const HeadProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})`
+const ExpectedDiceFace = styled(Input).attrs({placeholder:'1-6', type:'number', name:'Dice face'})`
 `;
 
-const FlipCoinLayout = () => {
+const RollDiceLayout = () => {
     const [Experiments, setExperiments] = useState('2000');
-    const [Probability, setProbability] = useState('0.50');
+    const [DiceFace, setDiceFace] = useState('6');
     const [FieldError, setFieldError] = useState('');
     const [Loading, setLoading] = useState(false);
     const [ExperimentData, setExperimentData] = useState(undefined)
@@ -62,10 +62,10 @@ const FlipCoinLayout = () => {
         }, []
     );    
     const getExperimentResults = useCallback(
-        (Experiments,Probability) => {
+        (Experiments,DiceFace) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Bernoulli/FlipCoin?size=${Experiments}&p=${Probability}` 
+            const url =`api/Bernoulli/RollDice?size=${Experiments}&diceFace=${DiceFace}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})
@@ -80,25 +80,23 @@ const FlipCoinLayout = () => {
                                 value={Experiments}
                                 onBlur={(event)=> inputRangeValidator(event,setExperiments)}
                                 onChange={(event) => {setExperiments(event.target.value)}}
-                                name="Experiments"
                                 min="1"
                                 max="10000001">
                         </NumberOfExperiments>
                         <label>Experiments</label>
                     </InputContainer>
                     <InputContainer>
-                        <HeadProbability
-                                value={Probability}
-                                onBlur={(event)=> inputRangeValidator(event,setProbability)}
-                                onChange={(event) => {setProbability(event.target.value)}}
-                                name="Probability"
-                                min="0"
-                                max="1"
+                        <ExpectedDiceFace
+                                value={DiceFace}
+                                onBlur={(event)=> inputRangeValidator(event,setDiceFace)}
+                                onChange={(event) => {setDiceFace(event.target.value)}}
+                                min="1"
+                                max="6"
                             />
-                        <label>Probability</label>
+                        <label>Dice face</label>
                     </InputContainer>
                     <InputContainer>
-                        <Button onClick={() => getExperimentResults(Experiments, Probability)} disabled={Loading}>Go!</Button>
+                        <Button onClick={() => getExperimentResults(Experiments, DiceFace)} disabled={Loading}>Go!</Button>
                     </InputContainer>
                 </VariableContainer>
                 {
@@ -140,4 +138,4 @@ const FlipCoinLayout = () => {
 }
 
 
-export default FlipCoinLayout;
+export default RollDiceLayout;

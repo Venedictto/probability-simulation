@@ -38,12 +38,18 @@ const ErrorField = styled.div`
 `;
 const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})`
 `;
-const HeadProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})`
+const ExpextedResult = styled(Input).attrs({placeholder:'(min,max)', type:'number', name:'Dice face'})`
+`;
+const Min = styled(Input).attrs({placeholder:'min value', type:'number', name:'MinValue'})`
+`;
+const Max = styled(Input).attrs({placeholder:'max value', type:'number', name:'MaxValue'})`
 `;
 
-const FlipCoinLayout = () => {
+const GenericLayout = () => {
     const [Experiments, setExperiments] = useState('2000');
-    const [Probability, setProbability] = useState('0.50');
+    const [ExpectedResult, setExpectedResult] = useState('');
+    const [MinValue, setMinValue] = useState('0');
+    const [MaxValue, setMaxValue] = useState('10');
     const [FieldError, setFieldError] = useState('');
     const [Loading, setLoading] = useState(false);
     const [ExperimentData, setExperimentData] = useState(undefined)
@@ -62,10 +68,10 @@ const FlipCoinLayout = () => {
         }, []
     );    
     const getExperimentResults = useCallback(
-        (Experiments,Probability) => {
+        (experiments, min, max, expectedResult) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Bernoulli/FlipCoin?size=${Experiments}&p=${Probability}` 
+            const url =`api/Bernoulli/Generic?size=${experiments}&min=${min}&max=${max}&expectedResult=${expectedResult}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})
@@ -80,25 +86,43 @@ const FlipCoinLayout = () => {
                                 value={Experiments}
                                 onBlur={(event)=> inputRangeValidator(event,setExperiments)}
                                 onChange={(event) => {setExperiments(event.target.value)}}
-                                name="Experiments"
                                 min="1"
                                 max="10000001">
                         </NumberOfExperiments>
                         <label>Experiments</label>
                     </InputContainer>
                     <InputContainer>
-                        <HeadProbability
-                                value={Probability}
-                                onBlur={(event)=> inputRangeValidator(event,setProbability)}
-                                onChange={(event) => {setProbability(event.target.value)}}
-                                name="Probability"
+                        <Min
+                                value={MinValue}
+                                onBlur={(event)=> inputRangeValidator(event,setMinValue)}
+                                onChange={(event) => {setMinValue(event.target.value)}}
                                 min="0"
-                                max="1"
+                                max="100"
                             />
-                        <label>Probability</label>
+                        <label>min value</label>
                     </InputContainer>
                     <InputContainer>
-                        <Button onClick={() => getExperimentResults(Experiments, Probability)} disabled={Loading}>Go!</Button>
+                        <Max
+                                value={MaxValue}
+                                onBlur={(event)=> inputRangeValidator(event,setMaxValue)}
+                                onChange={(event) => {setMaxValue(event.target.value)}}
+                                min="0"
+                                max="100"
+                            />
+                        <label>Max value</label>
+                    </InputContainer>
+                    <InputContainer>
+                        <ExpextedResult
+                                value={ExpectedResult}
+                                onBlur={(event)=> inputRangeValidator(event,setExpectedResult)}
+                                onChange={(event) => {setExpectedResult(event.target.value)}}
+                                min={(MinValue === '') ? '0' : MinValue }
+                                max={(MaxValue === '') ? '100' : MaxValue }
+                            />
+                        <label>Expected result</label>
+                    </InputContainer>
+                    <InputContainer>
+                        <Button onClick={() => getExperimentResults(Experiments, MinValue, MaxValue, ExpectedResult)} disabled={Loading}>Go!</Button>
                     </InputContainer>
                 </VariableContainer>
                 {
@@ -140,4 +164,4 @@ const FlipCoinLayout = () => {
 }
 
 
-export default FlipCoinLayout;
+export default GenericLayout;

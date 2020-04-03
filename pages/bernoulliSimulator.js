@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import FlipCoinLayout from '../Components/layouts/Bernoulli/FlipCoin/FlipCoinLayout';
+import RollDiceLayout from '../Components/layouts/Bernoulli/RollDice/RollDiceLayout';
+import GenericLayout from '../Components/layouts/Bernoulli/Generic/GenericLayout';
 import Tabs from '../Components/Tabs/Tabs';
 import Tab from '../Components/Tabs/Tab/Tab';
 
@@ -29,11 +31,11 @@ const bernoulliSimulator = () => {
             }
             {
                 tabIndex === 1 &&
-                <h2>Working progress dice bernoulli simulator</h2>
+                <RollDiceLayout />
             }
             {
                 tabIndex === 2 &&
-                <h2>Working progress generic bernoulli simulator</h2>
+                <GenericLayout />
             }
         </TabsContainer>
     )
