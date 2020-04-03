@@ -56,7 +56,7 @@ const LeftSideMenu = styled.div`
     display:flex;
     flex-direction:column;
     height:100%;
-    width: 200px;
+    max-width:150px;
     background-color:gray;
     box-shadow: 0 20px 40px 0 rgba(0,0,0,0.2);
 `;
@@ -71,15 +71,19 @@ const LeftSideMenuBackground = styled.div`
 `;
 
 const Header = () => {
-    const [leftSideMenuIsDisplayed, setleftSideMenuIsDisplayed] = useState(false);
+    const [LeftSideMenuIsDisplayed, setLeftSideMenuIsDisplayed] = useState(false);
+    const [ActiveIndex, setActiveIndex] = useState(0);
 
     const renderMenu = useCallback(
-            () => { 
+            (ActiveIndex) => { 
                 return menu.map((item,index) => 
                     <HeaderItem 
                         key={`${item.name}-${index}`}
                         name={item.name}
                         url={item.url}
+                        onItemClick={setActiveIndex}
+                        index={index}
+                        activeIndex={ActiveIndex}
                     />)
             },[]);
             
@@ -91,15 +95,15 @@ const Header = () => {
                 </HeaderText>
             </Link>
             <ToolBarMenu>
-                {renderMenu()}
+                {renderMenu(ActiveIndex)}
             </ToolBarMenu>
             <SideBarMenu>
-                <BurgerButton icon={faBars} onClick={() => setleftSideMenuIsDisplayed(!leftSideMenuIsDisplayed)} />
+                <BurgerButton icon={faBars} onClick={() => setLeftSideMenuIsDisplayed(!LeftSideMenuIsDisplayed)} />
                 {
-                    leftSideMenuIsDisplayed &&
-                    <LeftSideMenuBackground onClick={() => setleftSideMenuIsDisplayed(false)}>
+                    LeftSideMenuIsDisplayed &&
+                    <LeftSideMenuBackground onClick={() => setLeftSideMenuIsDisplayed(false)}>
                         <LeftSideMenu>
-                                {renderMenu()}
+                                {renderMenu(ActiveIndex)}
                         </LeftSideMenu>
                     </LeftSideMenuBackground>
                 }

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {useState, useCallback} from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
@@ -15,6 +16,7 @@ const HeaderItemButton = styled.div`
 const TextButton = styled.div`
     display:flex;
     margin-top: ${props => `${(props.theme.header.height/5)}px`};
+    border-bottom: ${props => props.isActive ? `5px solid ${props.theme.color.primaryDarkColor}` : 'unset'};
 `;
 
 const HeaderSubmenuItem = styled.div`
@@ -27,12 +29,12 @@ const HeaderSubmenuItem = styled.div`
 `
 
 const HeaderItem = (props) => {
-    const {url, name} = props;
+    const {url, name, onItemClick, index, activeIndex} = props;
     return (
-        <HeaderSubmenuItem>
+        <HeaderSubmenuItem >
             <HeaderItemButton>
                 <Link href={url} >
-                    <TextButton>
+                    <TextButton onClick={() => onItemClick(index)} isActive={index === activeIndex}>
                         {name}
                     </TextButton>
                 </Link>
