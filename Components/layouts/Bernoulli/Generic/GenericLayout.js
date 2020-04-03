@@ -44,6 +44,10 @@ const Min = styled(Input).attrs({placeholder:'min value', type:'number', name:'M
 `;
 const Max = styled(Input).attrs({placeholder:'max value', type:'number', name:'MaxValue'})`
 `;
+const CenterLoader = styled(Loader)`
+    display:flex !important;
+    justify-content:center !important;
+`;
 
 const GenericLayout = () => {
     const [Experiments, setExperiments] = useState('2000');
@@ -130,7 +134,7 @@ const GenericLayout = () => {
                 }
                     {
                         Loading &&
-                            <Loader
+                            <CenterLoader
                                 // @ts-ignore
                                 type={getRandomLoaderType()}
                                 color="#455a64"

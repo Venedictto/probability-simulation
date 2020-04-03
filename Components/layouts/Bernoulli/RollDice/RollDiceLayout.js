@@ -40,6 +40,11 @@ const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:
 `;
 const ExpectedDiceFace = styled(Input).attrs({placeholder:'1-6', type:'number', name:'Dice face'})`
 `;
+const CenterLoader = styled(Loader)`
+    display:flex !important;
+    justify-content:center !important;
+`;
+
 
 const RollDiceLayout = () => {
     const [Experiments, setExperiments] = useState('2000');
@@ -104,7 +109,7 @@ const RollDiceLayout = () => {
                 }
                     {
                         Loading &&
-                            <Loader
+                            <CenterLoader
                                 // @ts-ignore
                                 type={getRandomLoaderType()}
                                 color="#455a64"
