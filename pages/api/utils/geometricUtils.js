@@ -3,40 +3,34 @@ import * as Utils from './utils';
 
 const flipCoinUntilheader =  ['Number of attempts', 'Number of tails', { role: 'style' }];
 
-
+// Flip coin
 export const getFlipCoinUntilResults = (size, p) => {
-    let sample = getFlipCoinUntilHeadSample(size, p);
-    let results = R.groupWith(R.equals, R.sort((a, b) => a - b,sample))
-                   .map((value,index) => [`# ${index+1}`, value.length, Utils.getThemeColours()])
-    results.unshift(flipCoinUntilheader);
-    return results;
+    return getExperimentResult( size, 0, p, 0, 1);
 }
 
-export const getRollDiceUntilResults = (size, diceFace) => {
-    let sample = getRollDiceUntilDiceFaceSample(size, diceFace);
-    let results = R.groupWith(R.equals, R.sort((a, b) => a - b,sample))
-                   .map((value,index) => [`# ${index+1}`, value.length, Utils.getThemeColours()])
-    results.unshift(flipCoinUntilheader);
-    return results;
+export const getRollDiceUntilResults = (size, diceFace, p) => {
+  return getExperimentResult(size, diceFace, p, 1, 6);
 }
 
-const getFlipCoinUntilHeadSample = (size,p) => new Array(size).fill(0).map( () => getTailsUntilHead(p))
-const getRollDiceUntilDiceFaceSample = (size,diceFace) => new Array(size).fill(0).map( () => getExperimentsUntilExpected(1, 6, diceFace))
+export const getGenericUntilExperimentResults = (size, success, successProbability, min, max) => {
+    return getExperimentResult(size, success, successProbability, min, max);
+}
 
-const getTailsUntilHead = (p) => {
+
+const getExperimentResult = (size, success, p, min, max)  => {
+  const sample = new Array(size).fill(0).map( () => getExperimentsUntilExpected(success, p, min, max));
+  let results = R.groupWith(R.equals, R.sort((a, b) => a - b, sample))
+                 .map((value,index) => [`(${value.length/size}) # ${index+1}`, value.length, Utils.getThemeColours()])
+  results.unshift(flipCoinUntilheader);
+  return results;
+}
+
+
+
+const getExperimentsUntilExpected = (success, successProbability, min, max) => {
     let notHead = true;
     let tails = 1;
-    while(notHead){
-      (Utils.getRandomNumber(0,1,true) < p) ? notHead = false : tails++;
-    }
+    while(notHead) (Utils.getRandomWithoutEquiprobability(success, successProbability, min, max) == success) ? notHead = false : tails++;
     return tails;
   }
 
-  const getExperimentsUntilExpected = (min, max, expected) => {
-      let notHead = true;
-      let tails = 1;
-      while(notHead){
-        (Utils.getRandomNumber(min,max,false) == expected) ? notHead = false : tails++;
-      }
-      return tails;
-    }

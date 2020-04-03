@@ -3,11 +3,17 @@ import {loaderTypes} from '../../../constants/constants';
 import theme from '../../../constants/Theme';
 
 export const getRandomNumber = (min, max, isFloat) => {
-    let range = max - min
-    let random = Math.random() * range + min
-    const number = isFloat ? random : Math.round(random);
-    return number;
-  }
+  let range = max - min
+  let random = Math.random() * range + min
+  const number = isFloat ? random : Math.round(random);
+  return number;
+}
+export const getRandomWithoutEquiprobability = (success, successProbability, min, max) => {
+  const range = max-min;
+  const random = Math.random();
+  const number = (random < successProbability) ? success : Math.round(random * range + min);
+  return number;
+}
 
 export const getRandomLoaderType = () => {
   return loaderTypes[getRandomNumber(0, loaderTypes.length-1, false)];

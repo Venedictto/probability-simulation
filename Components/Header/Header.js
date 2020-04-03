@@ -72,7 +72,7 @@ const LeftSideMenuBackground = styled.div`
 
 const Header = () => {
     const [LeftSideMenuIsDisplayed, setLeftSideMenuIsDisplayed] = useState(false);
-    const [ActiveIndex, setActiveIndex] = useState(0);
+    const [ActiveIndex, setActiveIndex] = useState(-1);
 
     const renderMenu = useCallback(
             (ActiveIndex) => { 
@@ -115,7 +115,7 @@ const Header = () => {
 const menu = 
     [
         {   name: 'Bernoulli',  url: './bernoulliSimulator'},
-        {   name: 'Geomatric',  url: './geometricSimulator'},
+        {   name: 'Geometric',  url: './geometricSimulator'},
         {   name: 'Binomial',   url: './binomialSimulator'},
         {   name: 'Pascal',     url: './pascalSimulator'},
     ]
