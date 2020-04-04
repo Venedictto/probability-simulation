@@ -97,6 +97,7 @@ const RollDiceUntil = () => {
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})
+            .catch(err => setLoading(false));
         }, []
     );   
 
@@ -141,7 +142,7 @@ const RollDiceUntil = () => {
                             min="0.1"
                             max="1"
                         />
-                    <label>Dice face</label>
+                    <label>Success</label>
                 </InputContainer>
                 <InputContainer>
                     <HeadProbabilityInput

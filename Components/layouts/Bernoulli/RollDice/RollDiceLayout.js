@@ -74,7 +74,7 @@ const RollDiceLayout = () => {
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})
-            .catch(err => {setLoading(false); console.log(err)})
+            .catch(err => setLoading(false));
         }, []
     );    
 

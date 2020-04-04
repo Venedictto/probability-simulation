@@ -51,8 +51,8 @@ const CenterLoader = styled(Loader)`
 
 const GenericLayout = () => {
     const [Experiments, setExperiments] = useState('2000');
-    const [ExpectedResult, setExpectedResult] = useState('');
-    const [MinValue, setMinValue] = useState('0');
+    const [ExpectedResult, setExpectedResult] = useState('5');
+    const [MinValue, setMinValue] = useState('1');
     const [MaxValue, setMaxValue] = useState('10');
     const [FieldError, setFieldError] = useState('');
     const [Loading, setLoading] = useState(false);
@@ -79,6 +79,7 @@ const GenericLayout = () => {
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})
+            .catch(err => setLoading(false));
         }, []
     );    
 
