@@ -80,12 +80,12 @@ const RollDiceUntil = () => {
         (event,setFuncion) => {
             let { value, min, max } = event.target;
             if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
-              setFuncion('');
-              setFieldError(`Number of experiments allowed between ${min} and ${max}`);
+                setFuncion(max);
+                setFieldError(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
-              setFieldError('');
-              setFuncion(value);
+                setFieldError('');
+                setFuncion(value);
             }
         }, []
     );    
