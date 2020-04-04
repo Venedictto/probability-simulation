@@ -57,7 +57,7 @@ const RollDiceLayout = () => {
         (event,setFuncion) => {
             let { value, min, max } = event.target;
             if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
-              setFuncion('');
+              setFuncion(max);
               setFieldError(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
@@ -74,6 +74,7 @@ const RollDiceLayout = () => {
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})
+            .catch(err => {setLoading(false); console.log(err)})
         }, []
     );    
 

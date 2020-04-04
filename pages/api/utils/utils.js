@@ -3,15 +3,15 @@ import {loaderTypes} from '../../../constants/constants';
 import theme from '../../../constants/Theme';
 
 export const getRandomNumber = (min, max, isFloat) => {
-  let range = max - min
-  let random = Math.random() * range + min
-  const number = isFloat ? random : Math.round(random);
-  return number;
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    const random = Math.random() * (max - min + 1);
+    return (isFloat) ? random + min : Math.floor(random) + min; 
 }
 export const getRandomWithoutEquiprobability = (success, successProbability, min, max) => {
   const range = max-min;
   const random = Math.random();
-  const number = (random < successProbability) ? success : Math.round(random * range + min);
+  const number = (random < successProbability) ? success : Math.round((random * range) + min);
   return number;
 }
 

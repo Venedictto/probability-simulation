@@ -16,7 +16,7 @@ export default (req, res) => {
 }
 
 const sizeIsValid = (size) => {
-    return  (size !== '' && !isNaN(size) && size < 10000000 && size > 0) 
+    return  (size !== '' && !isNaN(size) && size <= 10000000 && size > 0) 
 }
 
 const diceFaceIsValid = (diceFace) => {
