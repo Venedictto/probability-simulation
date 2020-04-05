@@ -1,39 +1,23 @@
-import {getGenericResults} from '../utils/bernoulliUtils';
+import {getGenericBernoulliResults} from '../utils/bernoulliUtils';
 
 
 export default (req, res) => {
     const size = req.query.size;
-    const expectedResult = req.query.expectedResult;
-    const min = req.query.min;
-    const max = req.query.max;
-    if (sizeIsValid(size, res) && minAndMaxAreValid(min,max) &&expectedResultIsValid(expectedResult)) 
+    const p = req.query.p;
+    const success = req.query.success;
+    if (sizeIsValid(size) && probabilityIsValid(p) && successIsValid(success)) 
     {
-        const data = getGenericResults(parseInt(size), min, max, expectedResult)
+        const data = getGenericBernoulliResults(parseInt(size), parseFloat(p), parseInt(success))
         res.status(200).json(data);
     }
+    else 
+    {
+        res.status(400).json({message:'There are problems with the size or the probability.'});
+    }
 }
 
-const sizeIsValid = (size, res) => {
-    if(size === '' || isNaN(size) || size > 10000000 || size < 0) {
-        res.status(400).json({message: 'Error with size.'});
-        return false;
-    }
-    return true;
-}
-const minAndMaxAreValid = (min, max, res) => {
-    if  (min === '' || isNaN(min) || max === '' || isNaN(max) || min > max)  {
-        res.status(400).json({message: 'Error with min-max.'});
-        return false;
-    }
-    return true;
-}
-
-const expectedResultIsValid = (expectedResult, min, max, res) => {
-    if  (expectedResult === '' || isNaN(expectedResult) || expectedResult >= max || expectedResult <= min)  {
-        res.status(400).json({message: 'Error with expected result.'});
-        return false;
-    }
-    return true;
-}
+const sizeIsValid        = (size)     => (size !== '' && !isNaN(size) && size <= 10000000 && size > 0) 
+const successIsValid     = (success) => (success !== '' && !isNaN(success) && success >= 1 && success <= 6) 
+const probabilityIsValid = (p)        => (p !== '' && !isNaN(p) && p <= 1 && p >= 0) 
 
 

@@ -38,11 +38,9 @@ const ErrorField = styled.div`
 `;
 const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})`
 `;
-const ExpextedResult = styled(Input).attrs({placeholder:'(min,max)', type:'number', name:'Dice face'})`
+const SuccessResult = styled(Input).attrs({placeholder:'(min,max)', type:'number', name:'Dice face'})`
 `;
-const Min = styled(Input).attrs({placeholder:'min value', type:'number', name:'MinValue'})`
-`;
-const Max = styled(Input).attrs({placeholder:'max value', type:'number', name:'MaxValue'})`
+const SuccessProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})`
 `;
 const CenterLoader = styled(Loader)`
     display:flex !important;
@@ -52,10 +50,9 @@ const CenterLoader = styled(Loader)`
 const GenericLayout = () => {
     const [Experiments, setExperiments] = useState('2000');
     const [ExpectedResult, setExpectedResult] = useState('5');
-    const [MinValue, setMinValue] = useState('1');
-    const [MaxValue, setMaxValue] = useState('10');
     const [FieldError, setFieldError] = useState('');
     const [Loading, setLoading] = useState(false);
+    const [Probability, setProbability] = useState('0.50');
     const [ExperimentData, setExperimentData] = useState(undefined)
 
     const inputRangeValidator = useCallback(
@@ -72,10 +69,10 @@ const GenericLayout = () => {
         }, []
     );    
     const getExperimentResults = useCallback(
-        (experiments, min, max, expectedResult) => {
+        (experiments, expectedResult, Probability) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Bernoulli/Generic?size=${experiments}&min=${min}&max=${max}&expectedResult=${expectedResult}` 
+            const url =`api/Bernoulli/Generic?size=${experiments}&success=${expectedResult}&p=${Probability}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})
@@ -85,84 +82,73 @@ const GenericLayout = () => {
 
     return (
         <div>
-                <VariableContainer>
+            <VariableContainer>
+                <InputContainer>
+                    <NumberOfExperiments
+                            value={Experiments}
+                            onBlur={(event)=> inputRangeValidator(event,setExperiments)}
+                            onChange={(event) => {setExperiments(event.target.value)}}
+                            min="1"
+                            max="10000001">
+                    </NumberOfExperiments>
+                    <label>Experiments</label>
+                </InputContainer>
+                <InputContainer>
+                    <SuccessResult
+                            value={ExpectedResult}
+                            onBlur={(event)=> inputRangeValidator(event,setExpectedResult)}
+                            onChange={(event) => {setExpectedResult(event.target.value)}}
+                        />
+                    <label>Success</label>
+                </InputContainer>
                     <InputContainer>
-                        <NumberOfExperiments
-                                value={Experiments}
-                                onBlur={(event)=> inputRangeValidator(event,setExperiments)}
-                                onChange={(event) => {setExperiments(event.target.value)}}
-                                min="1"
-                                max="10000001">
-                        </NumberOfExperiments>
-                        <label>Experiments</label>
-                    </InputContainer>
-                    <InputContainer>
-                        <Min
-                                value={MinValue}
-                                onBlur={(event)=> inputRangeValidator(event,setMinValue)}
-                                onChange={(event) => {setMinValue(event.target.value)}}
+                        <SuccessProbability
+                                value={Probability}
+                                onBlur={(event)=> inputRangeValidator(event,setProbability)}
+                                onChange={(event) => {setProbability(event.target.value)}}
+                                name="Probability"
                                 min="0"
-                                max="100"
+                                max="1"
                             />
-                        <label>min value</label>
+                        <label>Probability</label>
                     </InputContainer>
-                    <InputContainer>
-                        <Max
-                                value={MaxValue}
-                                onBlur={(event)=> inputRangeValidator(event,setMaxValue)}
-                                onChange={(event) => {setMaxValue(event.target.value)}}
-                                min="0"
-                                max="100"
-                            />
-                        <label>Max value</label>
-                    </InputContainer>
-                    <InputContainer>
-                        <ExpextedResult
-                                value={ExpectedResult}
-                                onBlur={(event)=> inputRangeValidator(event,setExpectedResult)}
-                                onChange={(event) => {setExpectedResult(event.target.value)}}
-                                min={(MinValue === '') ? '0' : MinValue }
-                                max={(MaxValue === '') ? '100' : MaxValue }
-                            />
-                        <label>Expected result</label>
-                    </InputContainer>
-                    <InputContainer>
-                        <Button onClick={() => getExperimentResults(Experiments, MinValue, MaxValue, ExpectedResult)} disabled={Loading}>Go!</Button>
-                    </InputContainer>
-                </VariableContainer>
+                <InputContainer>
+                    <Button onClick={() => getExperimentResults(Experiments, ExpectedResult, Probability)} disabled={Loading}>Go!</Button>
+                </InputContainer>
+            </VariableContainer>
+            {
+                FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
+            }
                 {
-                    FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
+                    Loading &&
+                        <CenterLoader
+                            // @ts-ignore
+                            type={getRandomLoaderType()}
+                            color="#455a64"
+                            height={250}
+                            width={250}
+                            timeout={5000}/>
                 }
-                    {
-                        Loading &&
-                            <CenterLoader
-                                // @ts-ignore
-                                type={getRandomLoaderType()}
-                                color="#455a64"
-                                height={250}
-                                width={250}
-                                timeout={5000}/>
-                    }
-                    {
-                        ExperimentData !== undefined &&
-                        <ChartContainer>
-                            <Chart
-                                width={'500px'}
-                                height={'300px'}
-                                chartType="PieChart"
-                                loader={<div>Loading Chart</div>}
-                                data={ExperimentData}
-                                options={{
-                                    is3D: true,
-                                    slices: {
-                                        0: { color: '#455a64', offset: 0.01 },
-                                        1: { color: '#718792', offset: 0.01 },
-                                    }
-                                }}
-                                rootProps={{ 'data-testid': '1' }}
-                            />
-                            </ChartContainer>
-                    }
+                {
+                    ExperimentData !== undefined &&
+                    <ChartContainer>
+                        <Chart
+                            width={'500px'}
+                            height={'300px'}
+                            chartType="PieChart"
+                            loader={<div>Loading Chart</div>}
+                            data={ExperimentData}
+                            options={{
+                                is3D: true,
+                                slices: {
+                                    0: { color: '#455a64', offset: 0.01 },
+                                    1: { color: '#718792', offset: 0.01 },
+                                }
+                            }}
+                            rootProps={{ 'data-testid': '1' }}
+                        />
+                        </ChartContainer>
+                }
                     
         </div>
     )

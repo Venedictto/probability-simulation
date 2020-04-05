@@ -5,11 +5,11 @@ const flipCoinUntilheader =  ['Number of attempts', 'Number of tails', { role: '
 
 // Flip coin
 export const getFlipCoinUntilResults = (size, p) => {
-    return getExperimentResult( size, 0, p, 0, 1);
+    return getExperimentResult( size, 0, 1/2, 0, 1);
 }
 
 export const getRollDiceUntilResults = (size, diceFace, p) => {
-  return getExperimentResult(size, diceFace, p, 1, 6);
+  return getExperimentResult(size, diceFace, 1/6, 1, 6);
 }
 
 export const getGenericUntilExperimentResults = (size, success, successProbability, min, max) => {

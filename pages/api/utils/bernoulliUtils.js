@@ -3,30 +3,30 @@ import * as Utils from './utils';
 
 const flipCoinHeader =  ['Sides of the coin', 'Number of successes'];
 
+
 export const getFlipCoinResults = (size, p) => {
-    let sample = getRandomSample(size, 0, 1,true);
+    let sample = getBeroulliSample(size, p);
     const grupedSample = R.groupBy((value) => value < p ? 'Head' : 'Tail', sample)
-    let results = Object.keys(grupedSample)
-                        .map(key => [key, grupedSample[key].length])
+    let results = Object.keys(grupedSample).map(key => [key, grupedSample[key].length]);
     results.unshift(flipCoinHeader);
     return results;
 }
 
-export const getRollDiceResults = (size, diceFace) => {
-    return getExperimentResult(size, diceFace, 1, 6);
+export const getRollDiceResults = (size, success) => {
+    return getGenericBernoulliResults(size, 1/6, success);
 }
 
-export const getGenericResults = (size, min, max, expectedResult) => {
-    return getExperimentResult(size,  expectedResult, min, max);
-}
-
-const getExperimentResult = (size, success, min, max)  => {
-    let sample = getRandomSample(size, min, max, false);
-    const grupedSample = R.groupBy((value) => value == success ? `Is ${success}` : `Is not ${success}`, sample);
-    let results = Object.keys(grupedSample)
-                        .map(key => [key, grupedSample[key].length])
+export const getGenericBernoulliResults = (size, p, success) => {
+    let sample = getBeroulliSample(size, p);
+    const grupedSample = R.groupBy((value) => value < p ? `Is ${success}` : `Is not ${success}`, sample)
+    let results = Object.keys(grupedSample).map(key => [key, grupedSample[key].length]);
     results.unshift(flipCoinHeader);
     return results;
-  }
+}
 
-const getRandomSample = (size, min, max, areFloat) => new Array(size).fill(0).map( () => Utils.getRandomNumber(min, max, areFloat));
+const getBeroulliSample = (size, p) => {
+    return new Array(size).fill(0).map( () => doBernoulliExperiment(p));
+}
+const doBernoulliExperiment = (p) => {
+    return (Math.random() <= p)
+}
