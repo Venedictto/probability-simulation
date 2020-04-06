@@ -1,23 +1,10 @@
-import {getFlipCoinUntilResults} from '../utils/geometricUtils';
+import {getGeometricExperimentResult} from '../utils/geometricUtils';
 
 
 export default (req, res) => {
     const size = req.query.size;
-    const p = req.query.p;
-    if (sizeIsValid(size) && probabilityIsValid(p)) 
-    {
-        res.status(400).json('There are problems with the size or the probability.');
-    }
-    else
-    {
-        res.status(200).json(getFlipCoinUntilResults(parseInt(size), parseFloat(p)));
-    }
+    if (sizeIsValid(size)) res.status(200).json(getGeometricExperimentResult(parseInt(size), 0, 0.5));
+    else res.status(400).json({message:'The size should be in the following range (1, 10.000.000)'});
 }
 
-const sizeIsValid = (size) => {
-    return  (size !== '' && isNaN(size) && size < 10000000 && size > 0) 
-}
-
-const probabilityIsValid = (p) => {
-    return  (p !== '' && isNaN(p) && p <= 1 && p >= 0.1) 
-}
+const sizeIsValid = (size) => (size !== '' && !isNaN(size) && size <= 10000000 && size > 0) 

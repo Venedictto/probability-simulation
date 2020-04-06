@@ -27,6 +27,6 @@ export const getGenericBernoulliResults = (size, p, success) => {
 const getBeroulliSample = (size, p) => {
     return new Array(size).fill(0).map( () => doBernoulliExperiment(p));
 }
-const doBernoulliExperiment = (p) => {
+export const doBernoulliExperiment = (p) => {
     return (Math.random() <= p)
 }

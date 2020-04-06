@@ -6,7 +6,7 @@ import Button from '../../../Button/Button';
 import Chart from 'react-google-charts';
 import fetch from 'isomorphic-unfetch';
 import Loader from 'react-loader-spinner';
-import {getRandomLoaderType} from '../../../../pages/api/utils/utils';
+import {getRandomLoaderType, getRandomThemeColour} from '../../../../pages/api/utils/utils';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -36,11 +36,9 @@ const ErrorField = styled.div`
     height: 2rem;
     font-weight: ${props => props.theme.font.weight.bold};
 `;
-const NumberOfExperimentsInput = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})`
+const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})`
 `;
-const HeadProbabilityInput = styled(Input).attrs({placeholder:'0.1-1', type:'number', name:'Probability'})`
-`;
-const DiceFaceInput = styled(Input).attrs({placeholder:'1-6', type:'number', name:'DsiceFace'})`
+const HeadProbability = styled(Input).attrs({placeholder:'0.1-1', type:'number', name:'Probability'})`
 `;
 const CenterLoader = styled(Loader)`
     display:flex !important;
@@ -60,11 +58,9 @@ const chartOptions = {
     legend: { position: 'none' },
 };
 
-const RollDiceUntil = () => {
+const FlipCoinUntilHeadLayout = () => {
 
     const [Experiments, setExperiments] = useState('2000');
-    const [Probability, setProbability] = useState('0.1666');
-    const [DiceFace, setDiceFace] = useState('1');
     const [FieldError, setFieldError] = useState('');
     const [Loading, setLoading] = useState(false);
     const [ExperimentData, setExperimentData] = useState(undefined)
@@ -73,8 +69,8 @@ const RollDiceUntil = () => {
         (event,setFuncion) => {
             let { value, min, max } = event.target;
             if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
-              setFuncion(max-1);
-              setFieldError(`Number of experiments allowed between ${min} and ${max}`);
+                setFuncion(max-1);
+                setFieldError(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
               setFieldError('');
@@ -83,13 +79,13 @@ const RollDiceUntil = () => {
         }, []
     );    
     const getExperimentResults = useCallback(
-        (Experiments,Probability, diceFace) => {
+        (Experiments) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Geometric/RollDiceUntil?size=${Experiments}&p=${Probability}&diceFace=${diceFace}` 
+            const url =`api/Geometric/FlipCoinUntilHead?size=${Experiments}` 
             fetch(url)
             .then(resolve => resolve.json())
-            .then(data => {setLoading(false); setExperimentData(data)})
+            .then(data => {setLoading(false); setExperimentData(data); setFieldError('')})
             .catch(err => setLoading(false));
         }, []
     );   
@@ -98,37 +94,25 @@ const RollDiceUntil = () => {
         <div>
             <VariableContainer>
                 <InputContainer>
-                    <NumberOfExperimentsInput
+                    <NumberOfExperiments
                             value={Experiments}
                             onBlur={(event)=> inputRangeValidator(event,setExperiments)}
                             onChange={(event) => {setExperiments(event.target.value)}}
+                            name="Experiments"
                             min="1"
                             max="10000001">
-                    </NumberOfExperimentsInput>
+                    </NumberOfExperiments>
                     <label>Experiments</label>
                 </InputContainer>
                 <InputContainer>
-                    <DiceFaceInput
-                            value={DiceFace}
-                            onBlur={(event)=> inputRangeValidator(event,setDiceFace)}
-                            onChange={(event) => {setDiceFace(event.target.value)}}
-                            min="0.1"
-                            max="1"
-                        />
-                    <label>Dice face</label>
-                </InputContainer>
-                <InputContainer>
-                    <HeadProbabilityInput
-                            value={Probability}
-                            onBlur={(event)=> inputRangeValidator(event,setProbability)}
-                            onChange={(event) => {setProbability(event.target.value)}}
-                            min="0.1"
-                            max="1"
+                    <HeadProbability
+                            value='0.50'
+                            disabled={true}
                         />
                     <label>Probability</label>
                 </InputContainer>
                 <InputContainer>
-                    <Button onClick={() => getExperimentResults(Experiments, Probability, DiceFace)} disabled={Loading}>Go!</Button>
+                    <Button onClick={() => getExperimentResults(Experiments)} disabled={Loading}>Go!</Button>
                 </InputContainer>
             </VariableContainer>
             {
@@ -139,7 +123,7 @@ const RollDiceUntil = () => {
                     <CenterLoader
                         // @ts-ignore
                         type={getRandomLoaderType()}
-                        color="#455a64"
+                        color={getRandomThemeColour(1)}
                         height={250}
                         width={250}
                         timeout={5000}/>
@@ -162,4 +146,4 @@ const RollDiceUntil = () => {
     )
 }
 
-export default RollDiceUntil;
+export default FlipCoinUntilHeadLayout;

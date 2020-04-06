@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import FlipCoinUntilHead from '../Components/layouts/Geometric/FlipCoinUntil/FlipCoinUntilHead';
-import RollDiceUntil from '../Components/layouts/Geometric/RollDiceUntil/RollDiceUntil';
-import GenericUntil from '../Components/layouts/Geometric/GenericUntil/GenericUntil';
+import FlipCoinUntilHeadLayout from '../Components/layouts/Geometric/FlipCoinUntil/FlipCoinUntilHeadLayout';
+import RollDiceUntilLayout from '../Components/layouts/Geometric/RollDiceUntil/RollDiceUntilLayout';
+import GenericUntilLayout from '../Components/layouts/Geometric/GenericUntil/GenericUntilLayout';
 import Tabs from '../Components/Tabs/Tabs';
 import Tab from '../Components/Tabs/Tab/Tab';
 
@@ -27,15 +27,15 @@ const geometricSimulator = () => {
             </Tabs>
             {
                 tabIndex === 0 &&
-                <FlipCoinUntilHead />
+                <FlipCoinUntilHeadLayout />
             }
             {
                 tabIndex === 1 &&
-                <RollDiceUntil/>
+                <RollDiceUntilLayout/>
             }
             {
                 tabIndex === 2 &&
-                <GenericUntil />
+                <GenericUntilLayout />
             }
         </TabsContainer>
     )
