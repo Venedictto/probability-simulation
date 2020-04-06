@@ -16,6 +16,7 @@ const HeaderContainer = styled.div`
     display: flex;
     grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
     box-shadow: 0 20px 40px 0 rgba(0,0,0,0.2);
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
     @media (max-width: 768px) {
         justify-content:space-between;
     }
