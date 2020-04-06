@@ -6,7 +6,7 @@ import Button from '../../../Button/Button';
 import Chart from 'react-google-charts';
 import fetch from 'isomorphic-unfetch';
 import Loader from 'react-loader-spinner';
-import {getRandomLoaderType} from '../../../../pages/api/utils/utils';
+import {getRandomLoaderType, getRandomThemeColour} from '../../../../pages/api/utils/utils';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -36,10 +36,9 @@ const ErrorField = styled.div`
     height: 2rem;
     font-weight: ${props => props.theme.font.weight.bold};
 `;
-const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})`
-`;
-const HeadProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})`
-`;
+const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})``;
+const HeadProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})``;
+
 const CenterLoader = styled(Loader)`
     display:flex !important;
     justify-content:center !important;
@@ -47,16 +46,16 @@ const CenterLoader = styled(Loader)`
 
 const FlipCoinLayout = () => {
     const [Experiments, setExperiments] = useState('2000');
-    const [Probability, setProbability] = useState('0.50');
     const [FieldError, setFieldError] = useState('');
     const [Loading, setLoading] = useState(false);
-    const [ExperimentData, setExperimentData] = useState(undefined)
+    const [ExperimentData, setExperimentData] = useState(undefined);
+    const [Colours, setColours] = useState(getRandomThemeColour(2));
 
     const inputRangeValidator = useCallback(
         (event,setFuncion) => {
             let { value, min, max } = event.target;
             if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
-                setFuncion(max-1);
+                setFuncion(max);
                 setFieldError(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
@@ -66,13 +65,14 @@ const FlipCoinLayout = () => {
         }, []
     );    
     const getExperimentResults = useCallback(
-        (Experiments,Probability) => {
+        (Experiments) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Bernoulli/FlipCoin?size=${Experiments}&p=${Probability}` 
+            setColours(getRandomThemeColour(2));
+            const url =`api/Bernoulli/FlipCoin?size=${Experiments}` 
             fetch(url)
             .then(resolve => resolve.json())
-            .then(data => {setLoading(false); setExperimentData(data)})
+            .then(data => {setLoading(false); setExperimentData(data); setFieldError('')})
             .catch(err => setLoading(false));
         }, []
     );    
@@ -85,25 +85,20 @@ const FlipCoinLayout = () => {
                                 value={Experiments}
                                 onBlur={(event)=> inputRangeValidator(event,setExperiments)}
                                 onChange={(event) => {setExperiments(event.target.value)}}
-                                name="Experiments"
                                 min="1"
-                                max="10000001">
+                                max="10000000">
                         </NumberOfExperiments>
                         <label>Experiments</label>
                     </InputContainer>
                     <InputContainer>
                         <HeadProbability
-                                value={Probability}
-                                onBlur={(event)=> inputRangeValidator(event,setProbability)}
-                                onChange={(event) => {setProbability(event.target.value)}}
-                                name="Probability"
-                                min="0"
-                                max="1"
+                                value='0.5'
+                                disabled={true}
                             />
                         <label>Probability</label>
                     </InputContainer>
                     <InputContainer>
-                        <Button onClick={() => getExperimentResults(Experiments, Probability)} disabled={Loading}>Go!</Button>
+                        <Button onClick={() => getExperimentResults(Experiments)} disabled={Loading}>Go!</Button>
                     </InputContainer>
                 </VariableContainer>
                 {
@@ -114,7 +109,7 @@ const FlipCoinLayout = () => {
                             <CenterLoader
                                 // @ts-ignore
                                 type={getRandomLoaderType()}
-                                color="#455a64"
+                                color={getRandomThemeColour(1)}
                                 height={250}
                                 width={250}
                                 timeout={5000}/>
@@ -131,8 +126,8 @@ const FlipCoinLayout = () => {
                                 options={{
                                     is3D: true,
                                     slices: {
-                                        0: { color: '#455a64', offset: 0.01 },
-                                        1: { color: '#718792', offset: 0.01 },
+                                        0: { color: Colours[0], offset: 0.01 },
+                                        1: { color: Colours[1], offset: 0.01 }
                                     }
                                 }}
                                 rootProps={{ 'data-testid': '1' }}

@@ -6,7 +6,7 @@ import Button from '../../../Button/Button';
 import Chart from 'react-google-charts';
 import fetch from 'isomorphic-unfetch';
 import Loader from 'react-loader-spinner';
-import {getRandomLoaderType} from '../../../../pages/api/utils/utils';
+import {getRandomLoaderType, getRandomThemeColour} from '../../../../pages/api/utils/utils';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -38,7 +38,7 @@ const ErrorField = styled.div`
 `;
 const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})`
 `;
-const SuccessResult = styled(Input).attrs({placeholder:'(min,max)', type:'number', name:'Dice face'})`
+const SuccessResult = styled(Input).attrs({placeholder:'Success', type:'number', name:'Success'})`
 `;
 const SuccessProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})`
 `;
@@ -53,13 +53,14 @@ const GenericLayout = () => {
     const [FieldError, setFieldError] = useState('');
     const [Loading, setLoading] = useState(false);
     const [Probability, setProbability] = useState('0.50');
-    const [ExperimentData, setExperimentData] = useState(undefined)
+    const [ExperimentData, setExperimentData] = useState(undefined);
+    const [Colours, setColours] = useState(getRandomThemeColour(2));
 
     const inputRangeValidator = useCallback(
         (event,setFuncion) => {
             let { value, min, max } = event.target;
             if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
-                setFuncion(max-1);
+                setFuncion(max);
                 setFieldError(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
@@ -72,10 +73,11 @@ const GenericLayout = () => {
         (experiments, expectedResult, Probability) => {
             setLoading(true);
             setExperimentData(undefined);
+            setColours(getRandomThemeColour(2));
             const url =`api/Bernoulli/Generic?size=${experiments}&success=${expectedResult}&p=${Probability}` 
             fetch(url)
             .then(resolve => resolve.json())
-            .then(data => {setLoading(false); setExperimentData(data)})
+            .then(data => {setLoading(false); setExperimentData(data); setFieldError('')})
             .catch(err => setLoading(false));
         }, []
     );    
@@ -89,14 +91,13 @@ const GenericLayout = () => {
                             onBlur={(event)=> inputRangeValidator(event,setExperiments)}
                             onChange={(event) => {setExperiments(event.target.value)}}
                             min="1"
-                            max="10000001">
+                            max="10000000">
                     </NumberOfExperiments>
                     <label>Experiments</label>
                 </InputContainer>
                 <InputContainer>
                     <SuccessResult
                             value={ExpectedResult}
-                            onBlur={(event)=> inputRangeValidator(event,setExpectedResult)}
                             onChange={(event) => {setExpectedResult(event.target.value)}}
                         />
                     <label>Success</label>
@@ -124,7 +125,7 @@ const GenericLayout = () => {
                         <CenterLoader
                             // @ts-ignore
                             type={getRandomLoaderType()}
-                            color="#455a64"
+                            color={getRandomThemeColour()}
                             height={250}
                             width={250}
                             timeout={5000}/>
@@ -141,8 +142,8 @@ const GenericLayout = () => {
                             options={{
                                 is3D: true,
                                 slices: {
-                                    0: { color: '#455a64', offset: 0.01 },
-                                    1: { color: '#718792', offset: 0.01 },
+                                    0: { color: Colours[0], offset: 0.01 },
+                                    1: { color: Colours[1], offset: 0.01 }
                                 }
                             }}
                             rootProps={{ 'data-testid': '1' }}
