@@ -12,7 +12,10 @@ const PageContainer = styled.div`
   width:100%;
   height:100%;
 `;
-export default class App extends NextApp {
+const Body = styled.div`
+  overflow-x:scroll;
+  height:90%;
+`;export default class App extends NextApp {
   render() {
     const { Component, pageProps } = this.props
 
@@ -20,7 +23,9 @@ export default class App extends NextApp {
       <ThemeProvider theme={theme}>
           <PageContainer>
             <Header />
-            <Component {...pageProps} />
+            <Body>
+              <Component {...pageProps} />
+            </Body>
           </PageContainer>
       </ThemeProvider>
     )

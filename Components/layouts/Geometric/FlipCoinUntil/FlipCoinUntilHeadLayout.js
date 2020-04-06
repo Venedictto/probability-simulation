@@ -26,9 +26,6 @@ const ChartContainer = styled.div`
     display:flex;
     flex-direction:row;
     justify-content:center;
-    @media (max-width: 768px) {
-        overflow: scroll;
-    }
 `;
 const ErrorField = styled.div`
     color: red;
@@ -133,6 +130,7 @@ const FlipCoinUntilHeadLayout = () => {
                 ExperimentData !== undefined &&
                 <ChartContainer>
                     <Chart
+                    
                         width={'800px'}
                         height={'800px'}
                         chartType="BarChart"
