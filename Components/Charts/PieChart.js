@@ -20,7 +20,6 @@ const PieChart = (props) =>
     const {data} = props;
     
     useEffect(() => {
-        console.log('useEffect', data)
         setColours(getRandomThemeColour(2));
       }, [props.data]);
 
@@ -50,7 +49,3 @@ const PieChart = (props) =>
         </>)
 }
 export default PieChart;
-
-/*
-[["Sides of the coin", "Number of successes"], ["Tail", 1020], ["Head", 980]] 
-*/
