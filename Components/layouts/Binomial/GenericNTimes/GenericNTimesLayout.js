@@ -5,6 +5,7 @@ import Button from '../../../Button/Button';
 import fetch from 'isomorphic-unfetch';
 import Spinner from '../../../Spinner/Spinner';
 import VerticalBarChart from '../../../Charts/VerticalBarChart';
+import ErrorField from '../../../ErrorField/ErrorField';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -20,13 +21,6 @@ const InputContainer = styled.div`
     font-size: ${props => props.theme.font.size.text};
     font-weight: ${props => props.theme.font.weight.bold};
 `;
-
-const ErrorField = styled.div`
-    color: red;
-    border-radius:10px;
-    height: 2rem;
-    font-weight: ${props => props.theme.font.weight.bold};
-`;
 const NumberOfExperimentsInput = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})``;
 const ProbabilityInput = styled(Input).attrs({placeholder:'0.1-1', type:'number', name:'Probability'})``;
 const SuccessInput = styled(Input).attrs({placeholder:'1-6', type:'number', name:'DiceFace'})``;
@@ -39,7 +33,7 @@ const GenericNTimesLayout = () => {
     const [Probability, setProbability] = useState('0.1');
     const [NumberOfRepetitions, setNumberOfRepetitions] = useState('100');
     const [Success, setSuccess] = useState('1');
-    const [FieldError, setFieldError] = useState('');
+    const [ErrorMessage, setErrorMessage] = useState('');
     const [Loading, setLoading] = useState(false);
     const [ExperimentData, setExperimentData] = useState(undefined)
 
@@ -48,10 +42,10 @@ const GenericNTimesLayout = () => {
             let { value, min, max } = event.target;
             if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
                 setFuncion(max);
-                setFieldError(`Number of experiments allowed between ${min} and ${max}`);
+                setErrorMessage(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
-                setFieldError('');
+                setErrorMessage('');
                 setFuncion(value);
             }
         }, []
@@ -114,9 +108,7 @@ const GenericNTimesLayout = () => {
                     <Button onClick={() => getExperimentResults(Experiments, Probability, NumberOfRepetitions, Success)} disabled={Loading}>Go!</Button>
                 </InputContainer>
             </VariableContainer>
-            {
-                FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
-            }
+            <ErrorField errorMessage={ErrorMessage}/>
             <Spinner loading={Loading}/>
             <VerticalBarChart data={ExperimentData} />
         </div>

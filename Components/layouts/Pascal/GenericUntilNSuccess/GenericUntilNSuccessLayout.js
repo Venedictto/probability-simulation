@@ -5,6 +5,7 @@ import Button from '../../../Button/Button';
 import fetch from 'isomorphic-unfetch';
 import Spinner from '../../../Spinner/Spinner';
 import VerticalBarChart from '../../../Charts/VerticalBarChart';
+import ErrorField from '../../../ErrorField/ErrorField';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -20,12 +21,6 @@ const InputContainer = styled.div`
     font-size: ${props => props.theme.font.size.text};
     font-weight: ${props => props.theme.font.weight.bold};
 `;
-const ErrorField = styled.div`
-    color: red;
-    border-radius:10px;
-    height: 2rem;
-    font-weight: ${props => props.theme.font.weight.bold};
-`;
 const NumberOfExperimentsInput = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})``;
 const ProbabilityInput = styled(Input).attrs({placeholder:'0.1-1', type:'number', name:'Probability'})``;
 const SuccessesInput = styled(Input).attrs({placeholder:'1-1000', type:'number', name:'Successes'})``;
@@ -35,7 +30,7 @@ const GenericUntilNSuccessLayout = () => {
     const [Experiments, setExperiments] = useState('2000');
     const [Probability, setProbability] = useState('0.1');
     const [Successes, setSuccesses] = useState('10');
-    const [FieldError, setFieldError] = useState('');
+    const [ErrorMessage, setErrorMessage] = useState('');
     const [Loading, setLoading] = useState(false);
     const [ExperimentData, setExperimentData] = useState(undefined)
 
@@ -44,10 +39,10 @@ const GenericUntilNSuccessLayout = () => {
             let { value, min, max } = event.target;
             if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
                 setFuncion(max);
-                setFieldError(`Number of experiments allowed between ${min} and ${max}`);
+                setErrorMessage(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
-                setFieldError('');
+                setErrorMessage('');
                 setFuncion(value);
             }
         }, []
@@ -100,9 +95,7 @@ const GenericUntilNSuccessLayout = () => {
                     <Button onClick={() => getExperimentResults(Experiments, Probability, Successes)} disabled={Loading}>Go!</Button>
                 </InputContainer>
             </VariableContainer>
-            {
-                FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
-            }
+            <ErrorField errorMessage={ErrorMessage} />
             <Spinner loading={Loading} />
             <VerticalBarChart data={ExperimentData}/>
         </div>

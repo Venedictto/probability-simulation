@@ -5,6 +5,7 @@ import Button from '../../../Button/Button';
 import fetch from 'isomorphic-unfetch';
 import Spinner from '../../../Spinner/Spinner';
 import PieChart from '../../../Charts/PieChart';
+import ErrorField from '../../../ErrorField/ErrorField';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -20,12 +21,6 @@ const InputContainer = styled.div`
     font-size: ${props => props.theme.font.size.text};
     font-weight: ${props => props.theme.font.weight.bold};
 `;
-const ErrorField = styled.div`
-    color: red;
-    border-radius:10px;
-    height: 2rem;
-    font-weight: ${props => props.theme.font.weight.bold};
-`;
 const ExperimentsInput = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})``;
 const SuccessInput = styled(Input).attrs({placeholder:'Success', type:'number', name:'Success'})``;
 const ProbabilityInput = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})``;
@@ -33,7 +28,7 @@ const ProbabilityInput = styled(Input).attrs({placeholder:'0-1', type:'number', 
 const GenericLayout = () => {
     const [Experiments, setExperiments] = useState('2000');
     const [ExpectedResult, setExpectedResult] = useState('5');
-    const [FieldError, setFieldError] = useState('');
+    const [ErrorMessage, setErrorMessage] = useState('');
     const [Loading, setLoading] = useState(false);
     const [Probability, setProbability] = useState('0.50');
     const [ExperimentData, setExperimentData] = useState(undefined);
@@ -43,10 +38,10 @@ const GenericLayout = () => {
             let { value, min, max } = event.target;
             if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
                 setFuncion(max);
-                setFieldError(`Number of experiments allowed between ${min} and ${max}`);
+                setErrorMessage(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
-              setFieldError('');
+              setErrorMessage('');
               setFuncion(value);
             }
         }, []
@@ -58,7 +53,7 @@ const GenericLayout = () => {
             const url =`api/Bernoulli/Generic?size=${experiments}&success=${expectedResult}&p=${Probability}` 
             fetch(url)
             .then(resolve => resolve.json())
-            .then(data => {setLoading(false); setExperimentData(data); setFieldError('')})
+            .then(data => {setLoading(false); setExperimentData(data); setErrorMessage('')})
             .catch(err => setLoading(false));
         }, []
     );    
@@ -98,9 +93,7 @@ const GenericLayout = () => {
                     <Button onClick={() => getExperimentResults(Experiments, ExpectedResult, Probability)} disabled={Loading}>Go!</Button>
                 </InputContainer>
             </VariableContainer>
-            {
-                FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
-            }
+            <ErrorField errorMessage={ErrorMessage}/>
             <Spinner loading={Loading}/>
             <PieChart data={ExperimentData}/>   
         </div>

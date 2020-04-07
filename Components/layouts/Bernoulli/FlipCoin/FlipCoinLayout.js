@@ -5,6 +5,7 @@ import Button from '../../../Button/Button';
 import fetch from 'isomorphic-unfetch';
 import Spinner from '../../../Spinner/Spinner';
 import PieChart from '../../../Charts/PieChart';
+import ErrorField from '../../../ErrorField/ErrorField';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -20,18 +21,12 @@ const InputContainer = styled.div`
     font-size: ${props => props.theme.font.size.text};
     font-weight: ${props => props.theme.font.weight.bold};
 `;
-const ErrorField = styled.div`
-    color: red;
-    border-radius:10px;
-    height: 2rem;
-    font-weight: ${props => props.theme.font.weight.bold};
-`;
 const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})``;
 const HeadProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})``;
 
 const FlipCoinLayout = () => {
     const [Experiments, setExperiments] = useState('2000');
-    const [FieldError, setFieldError] = useState('');
+    const [ErrorMessage, setErrorMessage] = useState('');
     const [Loading, setLoading] = useState(false);
     const [ExperimentData, setExperimentData] = useState(undefined);
 
@@ -40,10 +35,10 @@ const FlipCoinLayout = () => {
             let { value, min, max } = event.target;
             if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
                 setFuncion(max);
-                setFieldError(`Number of experiments allowed between ${min} and ${max}`);
+                setErrorMessage(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
-              setFieldError('');
+              setErrorMessage('');
               setFuncion(value);
             }
         }, []
@@ -55,7 +50,7 @@ const FlipCoinLayout = () => {
             const url =`api/Bernoulli/FlipCoin?size=${Experiments}` 
             fetch(url)
             .then(resolve => resolve.json())
-            .then(data => {setLoading(false); setExperimentData(data); setFieldError('')})
+            .then(data => {setLoading(false); setExperimentData(data); setErrorMessage('')})
             .catch(err => setLoading(false));
         }, []
     );    
@@ -84,9 +79,7 @@ const FlipCoinLayout = () => {
                     <Button onClick={() => getExperimentResults(Experiments)} disabled={Loading}>Go!</Button>
                 </InputContainer>
             </VariableContainer>
-            {
-                FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
-            }
+            <ErrorField errorMessage={ErrorMessage}/>
             <Spinner loading={Loading}/>
             <PieChart data={ExperimentData}/>
         </div>

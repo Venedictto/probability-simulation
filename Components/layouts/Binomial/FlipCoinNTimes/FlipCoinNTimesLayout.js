@@ -5,6 +5,7 @@ import Button from '../../../Button/Button';
 import fetch from 'isomorphic-unfetch';
 import Spinner from '../../../Spinner/Spinner';
 import VerticalBarChart from '../../../Charts/VerticalBarChart';
+import ErrorField from '../../../ErrorField/ErrorField';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -20,12 +21,6 @@ const InputContainer = styled.div`
     font-size: ${props => props.theme.font.size.text};
     font-weight: ${props => props.theme.font.weight.bold};
 `;
-const ErrorField = styled.div`
-    color: red;
-    border-radius:10px;
-    height: 2rem;
-    font-weight: ${props => props.theme.font.weight.bold};
-`;
 const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})``;
 const Probability = styled(Input).attrs({placeholder:'0.1-1', type:'number', name:'Probability'})``;
 const Repetitions = styled(Input).attrs({placeholder:'1-100', type:'number', name:'Repetitions'})``;
@@ -34,7 +29,7 @@ const FlipCoinNTimesLayout = () => {
 
     const [Experiments, setExperiments] = useState('2000');
     const [NumberOfRepetitions, setNumberOfRepetitions] = useState('100');
-    const [FieldError, setFieldError] = useState('');
+    const [ErrorMessage, setErrorMessage] = useState('');
     const [Loading, setLoading] = useState(false);
     const [ExperimentData, setExperimentData] = useState(undefined)
 
@@ -43,10 +38,10 @@ const FlipCoinNTimesLayout = () => {
             let { value, min, max } = event.target;
             if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
                 setFuncion(max);
-                setFieldError(`Number of experiments allowed between ${min} and ${max}`);
+                setErrorMessage(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
-              setFieldError('');
+              setErrorMessage('');
               setFuncion(value);
             }
         }, []
@@ -58,7 +53,7 @@ const FlipCoinNTimesLayout = () => {
             const url =`api/Binomial/FlipCoinNTimes?size=${Experiments}&n=${repetitions}` 
             fetch(url)
             .then(resolve => resolve.json())
-            .then(data => {setLoading(false); setExperimentData(data); setFieldError('')})
+            .then(data => {setLoading(false); setExperimentData(data); setErrorMessage('')})
             .catch(err => setLoading(false));
         }, []
     );   
@@ -95,9 +90,7 @@ const FlipCoinNTimesLayout = () => {
                     <Button onClick={() => getExperimentResults(Experiments, NumberOfRepetitions)} disabled={Loading}>Go!</Button>
                 </InputContainer>
             </VariableContainer>
-            {
-                FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
-            }
+            <ErrorField errorMessage={ErrorMessage}/>
             <Spinner loading={Loading}/>
             <VerticalBarChart data={ExperimentData} />
         </div>

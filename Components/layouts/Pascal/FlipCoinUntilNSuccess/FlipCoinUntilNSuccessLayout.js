@@ -5,6 +5,7 @@ import Button from '../../../Button/Button';
 import fetch from 'isomorphic-unfetch';
 import Spinner from '../../../Spinner/Spinner';
 import VerticalBarChart from '../../../Charts/VerticalBarChart';
+import ErrorField from '../../../ErrorField/ErrorField';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -20,35 +21,15 @@ const InputContainer = styled.div`
     font-size: ${props => props.theme.font.size.text};
     font-weight: ${props => props.theme.font.weight.bold};
 `;
-const ErrorField = styled.div`
-    color: red;
-    border-radius:10px;
-    height: 2rem;
-    font-weight: ${props => props.theme.font.weight.bold};
-`;
 const ExperimentsInput = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})``;
 const ProbabilityInput = styled(Input).attrs({placeholder:'0.1-1', type:'number', name:'Probability'})``;
 const SuccessesInput = styled(Input).attrs({placeholder:'1-100', type:'number', name:'NumberOfSuccess'})``;
-
-const chartOptions = {
-    title: '',
-    chartArea: { width: '50%' },
-    hAxis: {
-        title: 'Number of tails',
-        minValue: 0,
-    },
-    vAxis: {
-        title: 'number of thrown',
-    },
-    bar: { groupWidth: '95%' },
-    legend: { position: 'none' },
-};
 
 const FlipCoinUntilNSuccessLayout = () => {
 
     const [Experiments, setExperiments] = useState('2000');
     const [Successes, setSuccesses] = useState('10');
-    const [FieldError, setFieldError] = useState('');
+    const [ErrorMessage, setErrorMessage] = useState('');
     const [Loading, setLoading] = useState(false);
     const [ExperimentData, setExperimentData] = useState(undefined)
 
@@ -57,10 +38,10 @@ const FlipCoinUntilNSuccessLayout = () => {
             let { value, min, max } = event.target;
             if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
                 setFuncion(max);
-                setFieldError(`Number of experiments allowed between ${min} and ${max}`);
+                setErrorMessage(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
-              setFieldError('');
+              setErrorMessage('');
               setFuncion(value);
             }
         }, []
@@ -72,7 +53,7 @@ const FlipCoinUntilNSuccessLayout = () => {
             const url =`api/Pascal/FlipCoinUntilNSuccesses?size=${experiments}&successes=${successes}` 
             fetch(url)
             .then(resolve => resolve.json())
-            .then(data => {setLoading(false); setExperimentData(data); setFieldError('')})
+            .then(data => {setLoading(false); setExperimentData(data); setErrorMessage('')})
             .catch(err => setLoading(false));
         }, []
     );   
@@ -109,9 +90,7 @@ const FlipCoinUntilNSuccessLayout = () => {
                     <Button onClick={() => getExperimentResults(Experiments, Successes)} disabled={Loading}>Go!</Button>
                 </InputContainer>
             </VariableContainer>
-            {
-                FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
-            }
+            <ErrorField errorMessage={ErrorMessage} />
             <Spinner loading={Loading} />
             <VerticalBarChart data={ExperimentData} />
         </div>
