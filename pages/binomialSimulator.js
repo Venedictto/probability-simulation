@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
 import Tabs from '../Components/Tabs/Tabs';
 import Tab from '../Components/Tabs/Tab/Tab';
+import FlipCoinNTimes from '../Components/layouts/Binomial/FlipCoinNTimes/FlipCoinNTimesLayout';
+import RollDiceNTimes from '../Components/layouts/Binomial/RollDiceNTimes/RollDiceNTimesLayout';
+import GenericNTimes from '../Components/layouts/Binomial/GenericNTimes/GenericNTimesLayout';
 
 import styled from 'styled-components';
 
@@ -24,15 +27,15 @@ const binomialSimulator = () => {
             </Tabs>
             {
                 tabIndex === 0 &&
-                <h2>Working progress coin binomial simulator</h2>
+                <FlipCoinNTimes />
             }
             {
                 tabIndex === 1 &&
-                <h2>Working progress dice binomial simulator</h2>
+                <RollDiceNTimes />
             }
             {
                 tabIndex === 2 &&
-                <h2>Working progress generic binomial simulator</h2>
+                <GenericNTimes />
             }
         </TabsContainer>
     )
