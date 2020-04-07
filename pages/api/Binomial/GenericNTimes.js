@@ -5,7 +5,6 @@ export default (req, res) => {
     const size = req.query.size;
     const n = req.query.n;
     const p = req.query.p;
-    console.log(size, n, p);
     if (sizeIsValid(size) && repetitionIsValid(n) && probabilityIsValid(p)) res.status(200).json(getBinomialExperimentResult(parseInt(size), p, n));
     else res.status(400).json({message:'The size should be in the following range (1, 10.000.000)'});
 }
