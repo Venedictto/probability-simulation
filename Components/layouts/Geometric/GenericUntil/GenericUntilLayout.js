@@ -70,7 +70,7 @@ const GenericUntilLayout = () => {
         (event,setFuncion) => {
             let { value, min, max } = event.target;
             if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
-                setFuncion(max-1);
+                setFuncion(max);
                 setFieldError(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
@@ -100,7 +100,7 @@ const GenericUntilLayout = () => {
                             onBlur={(event)=> inputRangeValidator(event,setExperiments)}
                             onChange={(event) => {setExperiments(event.target.value)}}
                             min="1"
-                            max="10000001">
+                            max="10000000">
                     </NumberOfExperimentsInput>
                     <label>Experiments</label>
                 </InputContainer>

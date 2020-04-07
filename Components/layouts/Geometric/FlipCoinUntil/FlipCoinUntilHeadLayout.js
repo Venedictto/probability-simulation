@@ -66,7 +66,7 @@ const FlipCoinUntilHeadLayout = () => {
         (event,setFuncion) => {
             let { value, min, max } = event.target;
             if (value === '' || Math.max(Number(min), Math.min(Number(max), Number(value))) !== Number(value)){
-                setFuncion(max-1);
+                setFuncion(max);
                 setFieldError(`Number of experiments allowed between ${min} and ${max}`);
             }
             else{
@@ -97,7 +97,7 @@ const FlipCoinUntilHeadLayout = () => {
                             onChange={(event) => {setExperiments(event.target.value)}}
                             name="Experiments"
                             min="1"
-                            max="10000001">
+                            max="10000000">
                     </NumberOfExperiments>
                     <label>Experiments</label>
                 </InputContainer>
