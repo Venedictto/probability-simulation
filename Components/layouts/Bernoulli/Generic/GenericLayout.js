@@ -5,8 +5,8 @@ import Input from '../../../Input/Input';
 import Button from '../../../Button/Button';
 import Chart from 'react-google-charts';
 import fetch from 'isomorphic-unfetch';
-import Loader from 'react-loader-spinner';
-import {getRandomLoaderType, getRandomThemeColour} from '../../../../pages/api/utils/utils';
+import Spinner from '../../../Spinner/Spinner';
+import {getRandomThemeColour} from '../../../../pages/api/utils/utils';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -36,16 +36,9 @@ const ErrorField = styled.div`
     height: 2rem;
     font-weight: ${props => props.theme.font.weight.bold};
 `;
-const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})`
-`;
-const SuccessResult = styled(Input).attrs({placeholder:'Success', type:'number', name:'Success'})`
-`;
-const SuccessProbability = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})`
-`;
-const CenterLoader = styled(Loader)`
-    display:flex !important;
-    justify-content:center !important;
-`;
+const ExperimentsInput = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})``;
+const SuccessInput = styled(Input).attrs({placeholder:'Success', type:'number', name:'Success'})``;
+const ProbabilityInput = styled(Input).attrs({placeholder:'0-1', type:'number', name:'Probability'})``;
 
 const GenericLayout = () => {
     const [Experiments, setExperiments] = useState('2000');
@@ -86,24 +79,24 @@ const GenericLayout = () => {
         <div>
             <VariableContainer>
                 <InputContainer>
-                    <NumberOfExperiments
+                    <ExperimentsInput
                             value={Experiments}
                             onBlur={(event)=> inputRangeValidator(event,setExperiments)}
                             onChange={(event) => {setExperiments(event.target.value)}}
                             min="1"
                             max="10000000">
-                    </NumberOfExperiments>
+                    </ExperimentsInput>
                     <label>Experiments</label>
                 </InputContainer>
                 <InputContainer>
-                    <SuccessResult
+                    <SuccessInput
                             value={ExpectedResult}
                             onChange={(event) => {setExpectedResult(event.target.value)}}
                         />
                     <label>Success</label>
                 </InputContainer>
                     <InputContainer>
-                        <SuccessProbability
+                        <ProbabilityInput
                                 value={Probability}
                                 onBlur={(event)=> inputRangeValidator(event,setProbability)}
                                 onChange={(event) => {setProbability(event.target.value)}}
@@ -120,37 +113,27 @@ const GenericLayout = () => {
             {
                 FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
             }
-                {
-                    Loading &&
-                        <CenterLoader
-                            // @ts-ignore
-                            type={getRandomLoaderType()}
-                            color={getRandomThemeColour()}
-                            height={250}
-                            width={250}
-                            timeout={5000}/>
-                }
-                {
-                    ExperimentData !== undefined &&
-                    <ChartContainer>
-                        <Chart
-                            width={'500px'}
-                            height={'300px'}
-                            chartType="PieChart"
-                            loader={<div>Loading Chart</div>}
-                            data={ExperimentData}
-                            options={{
-                                is3D: true,
-                                slices: {
-                                    0: { color: Colours[0], offset: 0.01 },
-                                    1: { color: Colours[1], offset: 0.01 }
-                                }
-                            }}
-                            rootProps={{ 'data-testid': '1' }}
-                        />
-                        </ChartContainer>
-                }
-                    
+            <Spinner loading={Loading}/>
+            {
+                ExperimentData !== undefined &&
+                <ChartContainer>
+                    <Chart
+                        width={'500px'}
+                        height={'300px'}
+                        chartType="PieChart"
+                        loader={<div>Loading Chart</div>}
+                        data={ExperimentData}
+                        options={{
+                            is3D: true,
+                            slices: {
+                                0: { color: Colours[0], offset: 0.01 },
+                                1: { color: Colours[1], offset: 0.01 }
+                            }
+                        }}
+                        rootProps={{ 'data-testid': '1' }}
+                    />
+                </ChartContainer>
+            }   
         </div>
     )
 }
