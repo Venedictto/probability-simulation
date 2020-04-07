@@ -1,11 +1,10 @@
 import React, {useState, useCallback} from 'react';
-import Card from '../../../Card/Card';
 import styled from 'styled-components';
 import Input from '../../../Input/Input';
 import Button from '../../../Button/Button';
-import Chart from 'react-google-charts';
 import fetch from 'isomorphic-unfetch';
 import Spinner from '../../../Spinner/Spinner';
+import VerticalBarChart from '../../../Charts/VerticalBarChart';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -20,11 +19,6 @@ const InputContainer = styled.div`
     font-family: ${props => props.theme.font.family};
     font-size: ${props => props.theme.font.size.text};
     font-weight: ${props => props.theme.font.weight.bold};
-`;
-const ChartContainer = styled.div`
-    display:flex;
-    flex-direction:row;
-    justify-content:center;
 `;
 const ErrorField = styled.div`
     color: red;
@@ -119,20 +113,7 @@ const FlipCoinUntilNSuccessLayout = () => {
                 FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
             }
             <Spinner loading={Loading} />
-            {
-
-                ExperimentData !== undefined &&
-                <ChartContainer>
-                    <Chart
-                        width={'800px'}
-                        height={'800px'}
-                        chartType="BarChart"
-                        loader={<div>Loading Chart</div>}
-                        data={ExperimentData}
-                        options={chartOptions}
-                    />
-                </ChartContainer>
-            }
+            <VerticalBarChart data={ExperimentData} />
         </div>
     )
 }
