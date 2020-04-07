@@ -2,9 +2,9 @@ import React, {useState, useCallback} from 'react';
 import styled from 'styled-components';
 import Input from '../../../Input/Input';
 import Button from '../../../Button/Button';
-import Chart from 'react-google-charts';
 import fetch from 'isomorphic-unfetch';
 import Spinner from '../../../Spinner/Spinner';
+import HortizontalBarChart from '../../../Charts/HortizontalBarChart';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -20,14 +20,6 @@ const InputContainer = styled.div`
     font-size: ${props => props.theme.font.size.text};
     font-weight: ${props => props.theme.font.weight.bold};
 `;
-const ChartContainer = styled.div`
-    display:flex;
-    flex-direction:row;
-    justify-content:center;
-    @media (max-width: 768px) {
-        overflow: scroll;
-    }
-`;
 const ErrorField = styled.div`
     color: red;
     border-radius:10px;
@@ -37,20 +29,6 @@ const ErrorField = styled.div`
 const NumberOfExperimentsInput = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})``;
 const HeadProbabilityInput = styled(Input).attrs({placeholder:'0.1-1', type:'number', name:'Probability'})``;
 const SuccessInput = styled(Input).attrs({placeholder:'1-6', type:'number', name:'DsiceFace'})``;
-
-const chartOptions = {
-    title: '',
-    chartArea: { width: '50%' },
-    hAxis: {
-        title: 'Number of tails',
-        minValue: 0,
-    },
-    vAxis: {
-        title: 'number of thrown',
-    },
-    bar: { groupWidth: '95%' },
-    legend: { position: 'none' },
-};
 
 const GenericUntilLayout = () => {
 
@@ -127,20 +105,7 @@ const GenericUntilLayout = () => {
                 FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
             }
             <Spinner loading={Loading} />
-            {
-
-                ExperimentData !== undefined &&
-                <ChartContainer>
-                    <Chart
-                        width={'800px'}
-                        height={'800px'}
-                        chartType="BarChart"
-                        loader={<div>Loading Chart</div>}
-                        data={ExperimentData}
-                        options={chartOptions}
-                    />
-                </ChartContainer>
-            }
+            <HortizontalBarChart data={ExperimentData} />
         </div>
     )
 }
