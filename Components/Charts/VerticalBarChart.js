@@ -28,11 +28,11 @@ const defaultChartOptions = {
     width:900,
     height:700,
     hAxis: {
-        title: 'Number of success',
+        title: 'Number of successes',
         minValue: 0,
     },
     vAxis: {
-        title: 'number of experiments',
+        title: 'Number of experiments',
     },
     bar: { groupWidth: '95%' },
     legend: { position: 'none' },
@@ -43,14 +43,14 @@ const mobileChartOptions = {
     width:500,
     height:600,
     hAxis: {
-        title: 'Number of success',
+        title: 'Number of successes',
         minValue: 0,
         textStyle : {
             fontSize: 10
         }
     },
     vAxis: {
-        title: 'number of experiments',
+        title: 'Number of experiments',
         textStyle : {
             fontSize: 10
         }
