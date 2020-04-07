@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
 import Tabs from '../Components/Tabs/Tabs';
 import Tab from '../Components/Tabs/Tab/Tab';
+import FlipCoinUntilNSuccess from '../Components/layouts/Pascal/FlipCoinUntilNSuccess/FlipCoinUntilNSuccessLayout';
+import RollDiceUntilNSuccess from '../Components/layouts/Pascal/RollDiceUntilNSuccess/RollDiceUntilNSuccessLayout';
+import GenericUntilNSuccess from '../Components/layouts/Pascal/GenericUntilNSuccess/GenericUntilNSuccessLayout';
 
 import styled from 'styled-components';
 
@@ -24,15 +27,15 @@ const pascalSimulator = () => {
             </Tabs>
             {
                 tabIndex === 0 &&
-                <h2>Working progress coin pascal simulator</h2>
+                <FlipCoinUntilNSuccess />
             }
             {
                 tabIndex === 1 &&
-                <h2>Working progress dice pascal simulator</h2>
+                <RollDiceUntilNSuccess />
             }
             {
                 tabIndex === 2 &&
-                <h2>Working progress generic pascal simulator</h2>
+                <GenericUntilNSuccess />
             }
         </TabsContainer>
     )
