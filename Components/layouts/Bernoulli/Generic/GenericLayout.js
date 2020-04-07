@@ -1,12 +1,10 @@
 import React, {useState, useCallback} from 'react';
-import Card from '../../../Card/Card';
 import styled from 'styled-components';
 import Input from '../../../Input/Input';
 import Button from '../../../Button/Button';
-import Chart from 'react-google-charts';
 import fetch from 'isomorphic-unfetch';
 import Spinner from '../../../Spinner/Spinner';
-import {getRandomThemeColour} from '../../../../pages/api/utils/utils';
+import PieChart from '../../../Charts/PieChart';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -21,14 +19,6 @@ const InputContainer = styled.div`
     font-family: ${props => props.theme.font.family};
     font-size: ${props => props.theme.font.size.text};
     font-weight: ${props => props.theme.font.weight.bold};
-`;
-const ChartContainer = styled.div`
-    display:flex;
-    flex-direction:row;
-    justify-content:center;
-    @media (max-width: 768px) {
-        overflow: scroll;
-    }
 `;
 const ErrorField = styled.div`
     color: red;
@@ -47,7 +37,6 @@ const GenericLayout = () => {
     const [Loading, setLoading] = useState(false);
     const [Probability, setProbability] = useState('0.50');
     const [ExperimentData, setExperimentData] = useState(undefined);
-    const [Colours, setColours] = useState(getRandomThemeColour(2));
 
     const inputRangeValidator = useCallback(
         (event,setFuncion) => {
@@ -66,7 +55,6 @@ const GenericLayout = () => {
         (experiments, expectedResult, Probability) => {
             setLoading(true);
             setExperimentData(undefined);
-            setColours(getRandomThemeColour(2));
             const url =`api/Bernoulli/Generic?size=${experiments}&success=${expectedResult}&p=${Probability}` 
             fetch(url)
             .then(resolve => resolve.json())
@@ -114,26 +102,7 @@ const GenericLayout = () => {
                 FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
             }
             <Spinner loading={Loading}/>
-            {
-                ExperimentData !== undefined &&
-                <ChartContainer>
-                    <Chart
-                        width={'500px'}
-                        height={'300px'}
-                        chartType="PieChart"
-                        loader={<div>Loading Chart</div>}
-                        data={ExperimentData}
-                        options={{
-                            is3D: true,
-                            slices: {
-                                0: { color: Colours[0], offset: 0.01 },
-                                1: { color: Colours[1], offset: 0.01 }
-                            }
-                        }}
-                        rootProps={{ 'data-testid': '1' }}
-                    />
-                </ChartContainer>
-            }   
+            <PieChart data={ExperimentData}/>   
         </div>
     )
 }

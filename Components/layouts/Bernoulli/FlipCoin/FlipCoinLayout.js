@@ -1,12 +1,10 @@
 import React, {useState, useCallback} from 'react';
-import Card from '../../../Card/Card';
 import styled from 'styled-components';
 import Input from '../../../Input/Input';
 import Button from '../../../Button/Button';
-import Chart from 'react-google-charts';
 import fetch from 'isomorphic-unfetch';
-import {getRandomThemeColour} from '../../../../pages/api/utils/utils';
 import Spinner from '../../../Spinner/Spinner';
+import PieChart from '../../../Charts/PieChart';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -22,14 +20,6 @@ const InputContainer = styled.div`
     font-size: ${props => props.theme.font.size.text};
     font-weight: ${props => props.theme.font.weight.bold};
 `;
-const ChartContainer = styled.div`
-    display:flex;
-    flex-direction:row;
-    justify-content:center;
-    @media (max-width: 768px) {
-        overflow: scroll;
-    }
-`;
 const ErrorField = styled.div`
     color: red;
     border-radius:10px;
@@ -44,7 +34,6 @@ const FlipCoinLayout = () => {
     const [FieldError, setFieldError] = useState('');
     const [Loading, setLoading] = useState(false);
     const [ExperimentData, setExperimentData] = useState(undefined);
-    const [Colours, setColours] = useState(getRandomThemeColour(2));
 
     const inputRangeValidator = useCallback(
         (event,setFuncion) => {
@@ -63,7 +52,6 @@ const FlipCoinLayout = () => {
         (Experiments) => {
             setLoading(true);
             setExperimentData(undefined);
-            setColours(getRandomThemeColour(2));
             const url =`api/Bernoulli/FlipCoin?size=${Experiments}` 
             fetch(url)
             .then(resolve => resolve.json())
@@ -74,54 +62,33 @@ const FlipCoinLayout = () => {
 
     return (
         <div>
-                <VariableContainer>
-                    <InputContainer>
-                        <NumberOfExperiments
-                                value={Experiments}
-                                onBlur={(event)=> inputRangeValidator(event,setExperiments)}
-                                onChange={(event) => {setExperiments(event.target.value)}}
-                                min="1"
-                                max="10000000">
-                        </NumberOfExperiments>
-                        <label>Experiments</label>
-                    </InputContainer>
-                    <InputContainer>
-                        <HeadProbability
-                                value='0.5'
-                                disabled={true}
-                            />
-                        <label>Probability</label>
-                    </InputContainer>
-                    <InputContainer>
-                        <Button onClick={() => getExperimentResults(Experiments)} disabled={Loading}>Go!</Button>
-                    </InputContainer>
-                </VariableContainer>
-                {
-                    FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
-                }
-                <Spinner loading={Loading}/>
-                    
-                    {
-                        ExperimentData !== undefined &&
-                        <ChartContainer>
-                            <Chart
-                                width={'500px'}
-                                height={'300px'}
-                                chartType="PieChart"
-                                loader={<div>Loading Chart</div>}
-                                data={ExperimentData}
-                                options={{
-                                    is3D: true,
-                                    slices: {
-                                        0: { color: Colours[0], offset: 0.01 },
-                                        1: { color: Colours[1], offset: 0.01 }
-                                    }
-                                }}
-                                rootProps={{ 'data-testid': '1' }}
-                            />
-                            </ChartContainer>
-                    }
-                    
+            <VariableContainer>
+                <InputContainer>
+                    <NumberOfExperiments
+                            value={Experiments}
+                            onBlur={(event)=> inputRangeValidator(event,setExperiments)}
+                            onChange={(event) => {setExperiments(event.target.value)}}
+                            min="1"
+                            max="10000000">
+                    </NumberOfExperiments>
+                    <label>Experiments</label>
+                </InputContainer>
+                <InputContainer>
+                    <HeadProbability
+                            value='0.5'
+                            disabled={true}
+                        />
+                    <label>Probability</label>
+                </InputContainer>
+                <InputContainer>
+                    <Button onClick={() => getExperimentResults(Experiments)} disabled={Loading}>Go!</Button>
+                </InputContainer>
+            </VariableContainer>
+            {
+                FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
+            }
+            <Spinner loading={Loading}/>
+            <PieChart data={ExperimentData}/>
         </div>
     )
 }
