@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Chart from 'react-google-charts';
 
@@ -10,15 +10,51 @@ const ChartContainer = styled.div`
         overflow: scroll;
     }
 `;
-const chartOptions = {
+const MobileChartWrapper = styled.div`
+    display:none;
+    @media (max-width: 768px) {
+        display:block;
+    }
+`;
+const DefaultChartWrapper = styled.div`
+    display:block;
+    @media (max-width: 768px) {
+        display:none;
+    }
+`;
+const defaultChartOptions = {
     title: '',
-    chartArea: { width: '50%' },
+    chartArea: { width: '70%' },
+    width: 900,
+    height: 800,
     hAxis: {
         title: 'Number of success',
         minValue: 0,
     },
     vAxis: {
         title: 'number of experiments',
+    },
+    bar: { groupWidth: '95%' },
+    legend: { position: 'none' },
+};
+
+const mobileChartOptions = {
+    title: '',
+    chartArea: { width: '50%' },
+    width: 500,
+    height: 500,
+    hAxis: {
+        title: 'Number of success',
+        minValue: 0,
+        textStyle : {
+            fontSize: 10
+        }
+    },
+    vAxis: {
+        title: 'number of experiments',
+        textStyle : {
+            fontSize: 10
+        }
     },
     bar: { groupWidth: '95%' },
     legend: { position: 'none' },
@@ -31,18 +67,24 @@ const HortizontalBarChart = (props) =>
     return (
         <>
             {
-
                 data !== undefined &&
                 <ChartContainer>
+                    <MobileChartWrapper>
+                        <Chart
+                            chartType="BarChart"
+                            loader={<div>Loading Chart</div>}
+                            data={data}
+                            options={mobileChartOptions}
+                        />    
+                        </MobileChartWrapper>
+                    <DefaultChartWrapper>
                     <Chart
-                    
-                        width={'800px'}
-                        height={'800px'}
                         chartType="BarChart"
                         loader={<div>Loading Chart</div>}
                         data={data}
-                        options={chartOptions}
+                        options={defaultChartOptions}
                     />
+                    </DefaultChartWrapper>
                 </ChartContainer>
             }
         </>)

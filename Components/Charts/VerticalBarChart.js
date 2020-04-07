@@ -10,15 +10,50 @@ const ChartContainer = styled.div`
         overflow: scroll;
     }
 `;
-const chartOptions = {
+const MobileChartWrapper = styled.div`
+    display:none;
+    @media (max-width: 768px) {
+        display:block;
+    }
+`;
+const DefaultChartWrapper = styled.div`
+    display:block;
+    @media (max-width: 768px) {
+        display:none;
+    }
+`;
+const defaultChartOptions = {
     title: '',
-    chartArea: { width: '50%' },
+    chartArea: { width: '70%' },
+    width:900,
+    height:700,
     hAxis: {
         title: 'Number of success',
         minValue: 0,
     },
     vAxis: {
         title: 'number of experiments',
+    },
+    bar: { groupWidth: '95%' },
+    legend: { position: 'none' },
+};
+const mobileChartOptions = {
+    title: '',
+    chartArea: { width: '45%' },
+    width:500,
+    height:600,
+    hAxis: {
+        title: 'Number of success',
+        minValue: 0,
+        textStyle : {
+            fontSize: 10
+        }
+    },
+    vAxis: {
+        title: 'number of experiments',
+        textStyle : {
+            fontSize: 10
+        }
     },
     bar: { groupWidth: '95%' },
     legend: { position: 'none' },
@@ -34,15 +69,22 @@ const VerticalBarChart = (props) =>
 
                 data !== undefined &&
                 <ChartContainer>
-                    <Chart
-                    
-                        width={'800px'}
-                        height={'800px'}
-                        chartType="ColumnChart"
-                        loader={<div>Loading Chart</div>}
-                        data={data}
-                        options={chartOptions}
-                    />
+                    <MobileChartWrapper>
+                        <Chart
+                            chartType="ColumnChart"
+                            loader={<div>Loading Chart</div>}
+                            data={data}
+                            options={mobileChartOptions}
+                        />
+                        </MobileChartWrapper>
+                    <DefaultChartWrapper>
+                        <Chart
+                            chartType="ColumnChart"
+                            loader={<div>Loading Chart</div>}
+                            data={data}
+                            options={defaultChartOptions}
+                        />
+                    </DefaultChartWrapper>
                 </ChartContainer>
             }
         </>)

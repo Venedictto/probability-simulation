@@ -7,7 +7,7 @@ const flipCoinUntilheader =  ['Number of attempts', 'Number of tails', { role: '
 export const getGeometricExperimentResult = (size, success, p)  => {
   const sample = getGeometricSample(size,p)
   let results = R.groupWith(R.equals, R.sort((a, b) => a - b, sample))
-                 .map((value,index) => [`(${value.length/size}) # ${index+1}`, value.length, Utils.getRandomThemeColour(1)])
+                 .map((value,index) => [`(${Math.ceil((value.length/size)*100)}%)${index+1}`, value.length, Utils.getRandomThemeColour(1)])
   results.unshift(flipCoinUntilheader);
   return results;
 }
