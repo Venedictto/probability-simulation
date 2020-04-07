@@ -5,8 +5,7 @@ import Input from '../../../Input/Input';
 import Button from '../../../Button/Button';
 import Chart from 'react-google-charts';
 import fetch from 'isomorphic-unfetch';
-import Loader from 'react-loader-spinner';
-import {getRandomLoaderType, getRandomThemeColour} from '../../../../pages/api/utils/utils';
+import Spinner from '../../../Spinner/Spinner';
 
 const VariableContainer = styled.div`
     display:flex;
@@ -36,10 +35,7 @@ const ErrorField = styled.div`
 const NumberOfExperiments = styled(Input).attrs({placeholder:'1-10000000', type:'number', name:'Experiments'})``;
 const Probability = styled(Input).attrs({placeholder:'0.1-1', type:'number', name:'Probability'})``;
 const Repetitions = styled(Input).attrs({placeholder:'1-100', type:'number', name:'Repetitions'})``;
-const CenterLoader = styled(Loader)`
-    display:flex !important;
-    justify-content:center !important;
-`;
+
 const chartOptions = {
     title: '',
     chartArea: { width: '50%' },
@@ -122,16 +118,7 @@ const FlipCoinNTimesLayout = () => {
             {
                 FieldError !== '' ? <ErrorField> ** {FieldError} </ErrorField> : <></>
             }
-            {
-                Loading &&
-                    <CenterLoader
-                        // @ts-ignore
-                        type={getRandomLoaderType()}
-                        color={getRandomThemeColour(1)}
-                        height={250}
-                        width={250}
-                        timeout={5000}/>
-            }
+            <Spinner loading={Loading}/>
             {
 
                 ExperimentData !== undefined &&
