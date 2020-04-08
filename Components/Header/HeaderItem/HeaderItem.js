@@ -10,13 +10,15 @@ const HeaderItemButton = styled.div`
     color:white;
     &:hover{
         color:${props => props.theme.color.primaryLightColor};
+        @media (max-width: 768px) {
+        color:${props => props.theme.color.primaryDarkColor};
+        }
     }
 `;
 
 const TextButton = styled.div`
     display:flex;
     margin-top: ${props => `${(props.theme.header.height/5)}px`};
-    border-bottom: ${props => props.isActive ? `unset` : 'unset'};
 `;
 
 const HeaderSubmenuItem = styled.div`
@@ -26,15 +28,16 @@ const HeaderSubmenuItem = styled.div`
     color:white;
     display:flex;
     flex-direction:column;
+    cursor:pointer;
 `
 
 const HeaderItem = (props) => {
-    const {url, name, onItemClick, index, activeIndex} = props;
+    const {url, name, onItemClick, activeIndex} = props;
     return (
         <HeaderSubmenuItem >
             <Link href={url} >
                 <HeaderItemButton>
-                        <TextButton onClick={() => onItemClick(index)} isActive={index === activeIndex}>
+                        <TextButton onClick={() => onItemClick()}>
                             {name}
                         </TextButton>
                 </HeaderItemButton>

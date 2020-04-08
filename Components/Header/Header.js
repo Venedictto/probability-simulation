@@ -20,8 +20,6 @@ const HeaderContainer = styled.div`
     @media (max-width: 768px) {
         justify-content:space-between;
     }
-
-
 `;
 const HeaderText = styled.div`
     padding:1rem;
@@ -37,43 +35,52 @@ const ToolBarMenu = styled.div`
         display:none;
     }
 `;
-const SideBarMenu = styled.div`
-    display:none;
-    @media (max-width: 768px) {
-        display:flex;
-    }
-`;
 const BurgerButton = styled(FontAwesomeIcon)`
     font-size: 50px;
     color: ${props => props.theme.color.primaryDarkColor};
+    display:none;
+    @media (max-width: 768px) {
+        display:unset;
+    }
     &:hover{
         color: ${props => props.theme.color.primaryLightColor};
     }
     margin-top: ${props => `${(props.theme.header.height/4)}px`};
     margin-right:1rem;
 `;
+
+const SideBarMenu = styled.div`
+    display:none;
+    position:absolute;
+    left:0px;
+    top:100px;
+    height:100%;
+    width:100%;
+    @media (max-width: 768px) {
+        display:flex;
+        flex-direction:row;
+    }
+`;
 const LeftSideMenu = styled.div`
     position:relative;
+    right:0px;
+    top:0px;
     display:flex;
     flex-direction:column;
-    height:100%;
-    max-width:150px;
     background-color:gray;
     box-shadow: 0 20px 40px 0 rgba(0,0,0,0.2);
 `;
 const LeftSideMenuBackground = styled.div`
-    position:absolute;
+    position:relative;
     left:0px;
-    z-index:1;
-    top: 100px;
-    height:100%;
-    width: 100%;
+    top:0px;
+    width:80%;
+    z-index:100;
     background-color:rgba(0,0,0,0.2);
 `;
 
 const Header = () => {
     const [LeftSideMenuIsDisplayed, setLeftSideMenuIsDisplayed] = useState(false);
-    const [ActiveIndex, setActiveIndex] = useState(-1);
 
     const renderMenu = useCallback(
             (ActiveIndex) => { 
@@ -82,34 +89,34 @@ const Header = () => {
                         key={`${item.name}-${index}`}
                         name={item.name}
                         url={item.url}
-                        onItemClick={setActiveIndex}
-                        index={index}
+                        onItemClick={() => {setLeftSideMenuIsDisplayed(false)} }
                         activeIndex={ActiveIndex}
                     />)
             },[]);
             
     return (
-        <HeaderContainer>
-            <Link href={'./index'}>
-                <HeaderText>
-                    Simulator
-                </HeaderText>
-            </Link>
-            <ToolBarMenu>
-                {renderMenu(ActiveIndex)}
-            </ToolBarMenu>
-            <SideBarMenu>
+        <>
+            <HeaderContainer>
+                <Link href={'./index'}>
+                    <HeaderText>
+                        Simulator
+                    </HeaderText>
+                </Link>
+                <ToolBarMenu>
+                    {renderMenu()}
+                </ToolBarMenu>
                 <BurgerButton icon={faBars} onClick={() => setLeftSideMenuIsDisplayed(!LeftSideMenuIsDisplayed)} />
+            </HeaderContainer>
                 {
                     LeftSideMenuIsDisplayed &&
-                    <LeftSideMenuBackground onClick={() => setLeftSideMenuIsDisplayed(false)}>
+                    <SideBarMenu>
                         <LeftSideMenu>
-                                {renderMenu(ActiveIndex)}
+                            {renderMenu()}
                         </LeftSideMenu>
-                    </LeftSideMenuBackground>
+                        <LeftSideMenuBackground onClick={() => setLeftSideMenuIsDisplayed(false)} />
+                    </SideBarMenu>
                 }
-            </SideBarMenu>
-        </HeaderContainer>
+        </>
     )
 }
 
