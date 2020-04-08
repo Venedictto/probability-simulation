@@ -10,7 +10,7 @@ const theme = {
     font: {
         family: 'helvetica',
         size: {
-            tittle:'50px',
+            title:'50px',
             subTitle:'25px',
             text:'18px',
         },

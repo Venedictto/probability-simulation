@@ -26,7 +26,7 @@ const HeaderContainer = styled.div`
 const HeaderText = styled.div`
     padding:1rem;
     font-family: ${props => props.theme.font.family};
-    font-size: ${props => props.theme.font.size.tittle};
+    font-size: ${props => props.theme.font.size.title};
     color:white;
     border-right: 5px solid ${props => props.theme.color.primaryDarkColor};
 `;

@@ -22,7 +22,7 @@ const TextButton = styled.div`
 const HeaderSubmenuItem = styled.div`
     padding:1rem;
     font-family: ${props => props.theme.font.family};
-    font-size: ${props => props.theme.font.size.tittle};
+    font-size: ${props => props.theme.font.size.title};
     color:white;
     display:flex;
     flex-direction:column;
