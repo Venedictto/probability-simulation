@@ -5,6 +5,7 @@ import theme from '../constants/Theme';
 import styled, { ThemeProvider } from "styled-components";
 import Head from 'next/head'
 import Header from '../Components/Header/Header';
+import 'katex/dist/katex.min.css';
 
 const PageContainer = styled.div`
   position:absolute;
@@ -25,7 +26,6 @@ const Body = styled.div`
           <Head>
             <title>Simulator</title>
             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-            <link href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css" rel="stylesheet"/>
           </Head>
           <PageContainer>
             <Header />
