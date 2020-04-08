@@ -1,4 +1,4 @@
-import {getGenericBernoulliResults} from '../utils/bernoulliUtils';
+import {getGenericBernoulliResults} from '../../../utils/bernoulliUtils';
 
 
 export default (req, res) => {

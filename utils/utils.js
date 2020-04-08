@@ -1,5 +1,5 @@
-import {loaderTypes} from '../../../constants/constants';
-import theme from '../../../constants/Theme';
+import {loaderTypes} from '../constants/constants';
+import theme from '../constants/Theme';
 
 export const getRandomNumber = (min, max, isFloat) => {
     min = Math.ceil(min);

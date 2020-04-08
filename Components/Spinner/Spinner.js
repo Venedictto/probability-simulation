@@ -1,7 +1,7 @@
 
 import React, {useCallback} from 'react';
 import styled from 'styled-components';
-import {getRandomThemeColour,getRandomNumber} from '../../pages/api/utils/utils';
+import {getRandomThemeColour,getRandomNumber} from '../../utils/utils';
 
 import {ClimbingBoxLoader, ClockLoader, DotLoader, HashLoader, PacmanLoader} from "react-spinners";
 

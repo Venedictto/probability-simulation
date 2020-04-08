@@ -1,4 +1,4 @@
-import {getGeometricExperimentResult} from '../utils/geometricUtils';
+import {getGeometricExperimentResult} from '../../../utils/geometricUtils';
 
 
 export default (req, res) => {

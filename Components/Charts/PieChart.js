@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {getRandomThemeColour} from '../../pages/api/utils/utils';
+import {getRandomThemeColour} from '../../utils/utils';
 import styled from 'styled-components';
 import Chart from 'react-google-charts';
 

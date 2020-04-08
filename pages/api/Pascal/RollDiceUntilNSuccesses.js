@@ -1,4 +1,4 @@
-import {getPascalExperimentResult} from '../utils/pascalUtils';
+import {getPascalExperimentResult} from '../../../utils/pascalUtils';
 
 
 export default (req, res) => {

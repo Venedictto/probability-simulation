@@ -1,4 +1,4 @@
-import {getBinomialExperimentResult} from '../utils/binomialUtils';
+import {getBinomialExperimentResult} from '../../../utils/binomialUtils';
 
 
 export default (req, res) => {

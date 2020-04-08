@@ -1,4 +1,4 @@
-import {getFlipCoinResults} from '../utils/bernoulliUtils';
+import {getFlipCoinResults} from '../../../utils/bernoulliUtils';
 
 
 export default (req, res) => {
