@@ -50,7 +50,7 @@ const GenericLayout = () => {
         (experiments, expectedResult, Probability) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Bernoulli/Generic?size=${experiments}&success=${expectedResult}&p=${Probability}` 
+            const url =`api/Bernoulli?type=Generic&size=${experiments}&success=${expectedResult}&p=${Probability}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data); setErrorMessage('')})

@@ -47,7 +47,7 @@ const FlipCoinLayout = () => {
         (Experiments) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Bernoulli/FlipCoin?size=${Experiments}` 
+            const url =`api/Bernoulli?type=FlipCoin&size=${Experiments}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data); setErrorMessage('')})

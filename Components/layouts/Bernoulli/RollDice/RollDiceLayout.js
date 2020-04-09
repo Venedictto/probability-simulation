@@ -51,7 +51,7 @@ const RollDiceLayout = () => {
         (Experiments,DiceFace) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Bernoulli/RollDice?size=${Experiments}&diceFace=${DiceFace}` 
+            const url =`api/Bernoulli?type=RollDice&size=${Experiments}&diceFace=${DiceFace}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data); setErrorMessage('')})
