@@ -50,7 +50,7 @@ const RollDiceUntilNSuccessLayout = () => {
         (experiments, successes) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Pascal/RollDiceUntilNSuccesses?size=${experiments}&successes=${successes}` 
+            const url =`api/Pascal?type=RollDice&size=${experiments}&successes=${successes}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})

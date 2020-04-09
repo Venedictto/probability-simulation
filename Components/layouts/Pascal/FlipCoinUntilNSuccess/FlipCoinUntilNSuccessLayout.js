@@ -50,7 +50,7 @@ const FlipCoinUntilNSuccessLayout = () => {
         (experiments, successes) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Pascal/FlipCoinUntilNSuccesses?size=${experiments}&successes=${successes}` 
+            const url =`api/Pascal?type=FlipCoin&size=${experiments}&successes=${successes}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data); setErrorMessage('')})

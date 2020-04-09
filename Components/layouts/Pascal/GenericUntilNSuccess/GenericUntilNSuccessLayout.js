@@ -51,7 +51,7 @@ const GenericUntilNSuccessLayout = () => {
         (experiments, probability, successes ) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Pascal/GenericUntilNSuccesses?size=${experiments}&p=${probability}&successes=${successes}` 
+            const url =`api/Pascal?type=Generic&size=${experiments}&p=${probability}&successes=${successes}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})
