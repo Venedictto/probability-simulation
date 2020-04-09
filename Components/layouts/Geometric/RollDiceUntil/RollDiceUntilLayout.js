@@ -53,7 +53,7 @@ const RollDiceUntilLayout = () => {
         (Experiments, Success) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Geometric/RollDiceUntil?size=${Experiments}&diceFace=${Success}` 
+            const url =`api/Geometric?type=RollDice&size=${Experiments}&diceFace=${Success}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})

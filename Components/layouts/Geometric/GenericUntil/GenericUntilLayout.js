@@ -51,7 +51,7 @@ const GenericUntilLayout = () => {
         (Experiments, Probability, Success) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Geometric/GenericUntil?size=${Experiments}&p=${Probability}&success=${Success}` 
+            const url =`api/Geometric?type=Generic&size=${Experiments}&p=${Probability}&success=${Success}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})

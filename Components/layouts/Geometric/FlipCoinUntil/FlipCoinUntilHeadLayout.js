@@ -50,7 +50,7 @@ const FlipCoinUntilHeadLayout = () => {
         (Experiments) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Geometric/FlipCoinUntilHead?size=${Experiments}` 
+            const url =`api/Geometric?type=FlipCoin&size=${Experiments}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data); setErrorMessage('')})
