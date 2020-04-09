@@ -7,7 +7,7 @@ const HeaderItemButton = styled.div`
     height:100%;
     font-family: ${props => props.theme.font.family};
     font-size: ${props => props.theme.font.size.subTitle};
-    color:white;
+    color:${props => props.theme.color.white};
     &:hover{
         color:${props => props.theme.color.primaryLightColor};
         @media (max-width: 768px) {
@@ -25,7 +25,7 @@ const HeaderSubmenuItem = styled.div`
     padding:1rem;
     font-family: ${props => props.theme.font.family};
     font-size: ${props => props.theme.font.size.title};
-    color:white;
+    color:${props => props.theme.color.white};
     display:flex;
     flex-direction:column;
     cursor:pointer;

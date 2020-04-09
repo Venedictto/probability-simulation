@@ -25,7 +25,7 @@ const HeaderText = styled.div`
     padding:1rem;
     font-family: ${props => props.theme.font.family};
     font-size: ${props => props.theme.font.size.title};
-    color:white;
+    color:${props => props.theme.color.white};
     border-right: 5px solid ${props => props.theme.color.primaryDarkColor};
 `;
 const ToolBarMenu = styled.div`
@@ -67,7 +67,7 @@ const LeftSideMenu = styled.div`
     top:0px;
     display:flex;
     flex-direction:column;
-    background-color:gray;
+    background-color:${props => props.theme.color.gray};
     box-shadow: 0 20px 40px 0 rgba(0,0,0,0.2);
 `;
 const LeftSideMenuBackground = styled.div`

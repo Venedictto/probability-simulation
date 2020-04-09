@@ -6,6 +6,11 @@ const theme = {
       secondaryColor: '#bf360c',
       secondaryDarkColor: '#870000',
       secondaryLightColor: '#f9683a',
+      lightgrey:'#e4e4e4',
+      gray: '#b2b2b2',
+      darkGray: '#838383',
+      black: 'black',
+      white: 'white',
     },
     font: {
         family: 'helvetica',

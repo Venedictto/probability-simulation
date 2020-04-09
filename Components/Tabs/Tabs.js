@@ -8,7 +8,7 @@ const TabWrapper = styled.div`
 const TabHeaderContent = styled.ul`
   display:flex;
   flex-direction:row;
-  background-color: white;
+  background-color: ${props => props.theme.color.white};
   padding:unset;
   margin:unset;
 `;
