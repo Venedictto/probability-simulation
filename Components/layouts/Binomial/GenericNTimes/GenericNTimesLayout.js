@@ -54,7 +54,7 @@ const GenericNTimesLayout = () => {
         (experiments, probability, repetitions, success ) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Binomial/GenericNTimes?size=${experiments}&p=${probability}&success=${success}&n=${repetitions}` 
+            const url =`api/Binomial?type=Generic&size=${experiments}&p=${probability}&success=${success}&n=${repetitions}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})

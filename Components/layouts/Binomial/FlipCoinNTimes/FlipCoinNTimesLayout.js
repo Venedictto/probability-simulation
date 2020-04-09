@@ -50,7 +50,7 @@ const FlipCoinNTimesLayout = () => {
         (Experiments, repetitions) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Binomial/FlipCoinNTimes?size=${Experiments}&n=${repetitions}` 
+            const url =`api/Binomial?type=FlipCoin&size=${Experiments}&n=${repetitions}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data); setErrorMessage('')})

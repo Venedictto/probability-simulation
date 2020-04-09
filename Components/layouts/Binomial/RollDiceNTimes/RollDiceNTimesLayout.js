@@ -52,7 +52,7 @@ const RollDiceNTimesLayout = () => {
         (experiments, success, Repetitions) => {
             setLoading(true);
             setExperimentData(undefined);
-            const url =`api/Binomial/RollDiceNTimes?size=${experiments}&diceFace=${success}&n=${Repetitions}` 
+            const url =`api/Binomial?type=RollDice&size=${experiments}&diceFace=${success}&n=${Repetitions}` 
             fetch(url)
             .then(resolve => resolve.json())
             .then(data => {setLoading(false); setExperimentData(data)})
